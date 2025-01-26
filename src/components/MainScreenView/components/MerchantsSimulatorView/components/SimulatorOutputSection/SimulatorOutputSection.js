@@ -6,7 +6,9 @@ import {
   StyledBudgetSummaryContainer,
   StyledBudgetTotal,
   StyledContainer,
+  StyledSkeleton,
   StyledTitle,
+  StyledUpliftAmount,
   StyledUpliftContainer,
   StyledUpliftContentContainer,
   StyledUpliftSubtitle,
@@ -49,28 +51,23 @@ const formatThousandsNumber = (value, suffix = '') => {
 };
 
 const SimulatorOutputSection = ({ isLoading }) => {
-  const renderBudgetSummary = () => {
-    return (
-      <Box>
-        <StyledBudgetTotal>
-          {formatThousandsNumber(data.budgetTotal)}
-        </StyledBudgetTotal>
-        <StyledBudgetMonthly>
-          {formatThousandsNumber(data.budgetMonthly, '/month')}
-        </StyledBudgetMonthly>
-      </Box>
-    );
-  };
-
   const renderUplift = (name, value) => {
     return (
       <StyledUpliftContentContainer>
         <StyledUpliftTitle>{name}</StyledUpliftTitle>
-        <StyledUpliftSubtitle>
-          {name === 'Sales uplift'
-            ? formatThousandsNumber(value)
-            : formatDecimalNumber(value)}
-        </StyledUpliftSubtitle>
+        {isLoading ? (
+          <StyledSkeleton
+            variant='rectangular'
+            width={100}
+            height={20}
+          />
+        ) : (
+          <StyledUpliftAmount>
+            {name === 'Sales uplift'
+              ? formatThousandsNumber(value)
+              : formatDecimalNumber(value)}
+          </StyledUpliftAmount>
+        )}
       </StyledUpliftContentContainer>
     );
   };
@@ -81,27 +78,32 @@ const SimulatorOutputSection = ({ isLoading }) => {
       </StyledTitle>
       <StyledBudgetSummaryContainer>
         {isLoading ? (
-          <Skeleton>{renderBudgetSummary()}</Skeleton>
+          <StyledSkeleton
+            variant='rectangular'
+            width={260}
+            height={60}
+          />
         ) : (
-          renderBudgetSummary()
+          <StyledBudgetTotal>
+            {formatThousandsNumber(data.budgetTotal)}
+          </StyledBudgetTotal>
+        )}
+        {isLoading ? (
+          <StyledSkeleton
+            variant='rectangular'
+            width={190}
+            height={20}
+          />
+        ) : (
+          <StyledBudgetMonthly>
+            {formatThousandsNumber(data.budgetMonthly, '/month')}
+          </StyledBudgetMonthly>
         )}
       </StyledBudgetSummaryContainer>
       <StyledUpliftContainer>
-        {isLoading ? (
-          <Skeleton>{renderUplift(null, 0)}</Skeleton>
-        ) : (
-          renderUplift('Conversion uplift', data.conversionUplift)
-        )}
-        {isLoading ? (
-          <Skeleton>{renderUplift(null, 0)}</Skeleton>
-        ) : (
-          renderUplift('AOV uplift', data.AOVUplift)
-        )}
-        {isLoading ? (
-          <Skeleton>{renderUplift(null, 0)}</Skeleton>
-        ) : (
-          renderUplift('Sales uplift', data.salesUplift)
-        )}
+        {renderUplift('Conversion uplift', data.conversionUplift)}
+        {renderUplift('AOV uplift', data.AOVUplift)}
+        {renderUplift('Sales uplift', data.salesUplift)}
       </StyledUpliftContainer>
     </StyledContainer>
   );

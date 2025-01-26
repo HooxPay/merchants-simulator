@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Box, Typography } from '@mui/material';
+import { Box, Skeleton, Typography } from '@mui/material';
 
 export const StyledContainer = styled(Box)(({ theme }) => ({
   margin: '4.25rem 0 1.5rem 2.5rem',
@@ -57,7 +57,14 @@ export const StyledUpliftTitle = styled(Typography)(({ theme }) => ({
   fontSize: '1rem',
 }));
 
-export const StyledUpliftSubtitle = styled(Typography)(({ theme }) => ({
+export const StyledUpliftAmount = styled(Typography)(({ theme }) => ({
   fontSize: '1.5rem',
   color: theme.shadesOfPurple.light,
+}));
+
+export const StyledSkeleton = styled(Skeleton)(({ theme }) => ({
+  marginTop: '0.875rem',
+  background:
+    'linear-gradient(90deg, rgba(145, 106, 255, 0.4) 0%, rgba(145, 106, 255, 0) 100%)',
+  borderRadius: '0.5rem',
 }));
