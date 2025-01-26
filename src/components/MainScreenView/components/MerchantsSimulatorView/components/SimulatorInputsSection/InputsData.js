@@ -1,4 +1,4 @@
-import { formatNumToReadableText } from "@/utils/math";
+import { formatNumToReadableText } from '@/utils/math';
 
 export const industryOptions = [
   { value: 'general', text: 'General (E-commerce)' },
@@ -28,8 +28,9 @@ export const slidersData = [
   },
   {
     name: 'avgOrder',
-    label: 'Average order (%)',
-    suffix: '%',
+    label: 'Average order ($)',
+    prefix: '$',
+    max: 300,
     onChange: (value) => setFieldValue('avgOrder', value),
   },
 ];
