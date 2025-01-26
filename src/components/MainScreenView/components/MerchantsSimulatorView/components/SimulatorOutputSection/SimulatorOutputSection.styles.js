@@ -5,6 +5,7 @@ export const StyledContainer = styled(Box)(({ theme }) => ({
   margin: '4.25rem 0 1.5rem 2.5rem',
   maxWidth: 540,
   backgroundColor: '#F6F2FF',
+  borderRadius: '0.5rem',
   [theme.breakpoints.down('md')]: {
     margin: 0,
     maxWidth: 400,
