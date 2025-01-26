@@ -6,7 +6,7 @@ export const StyledSelect = styled(Select)(({ theme }) => ({
   border: '1px solid rgba(0, 0, 0, 0.15)',
   borderRadius: '0.5rem',
   padding: '0',
-  marginBottom: '1rem',
+  marginBottom: '2.5rem',
   '& .MuiSelect-outlined': {
     padding: '0.75rem 1rem',
   },
@@ -22,6 +22,7 @@ export const StyledInputContainer = styled(Box)(({ theme }) => ({
 }));
 
 export const StyledSlider = styled(Slider)(({ theme }) => ({
+  marginBottom: '2.25rem',
   color: '#916AFF',
   '& .MuiSlider-thumb': {
     zIndex: 1,

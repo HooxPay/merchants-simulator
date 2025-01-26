@@ -29,7 +29,7 @@ const SimulatorInputsSection = ({}) => {
   );
   return (
     <StyledInputContainer>
-      <Box sx={{ marginBottom: '1.25rem' }}>
+      <Box>
         <StyledInputLabel htmlFor={'industry'} margin={0}>
           industry
         </StyledInputLabel>
@@ -69,7 +69,6 @@ const SimulatorInputsSection = ({}) => {
             flexDirection='column'
             mb={2}
             key={`${index}-sliderContainer`}
-            gap={2}
           >
             <Box
               display='flex'
