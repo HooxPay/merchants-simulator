@@ -21,7 +21,7 @@ const SimulatorInputsSection = ({}) => {
     <ErrorMessage
       name={name}
       render={(msg) => (
-        <Typography color='error' variant='body2' sx={{ marginTop: '6px' }}>
+        <Typography color='error' variant='body2' sx={{ marginTop: '-20px' }}>
           {msg}
         </Typography>
       )}

@@ -13,12 +13,13 @@ import { validationSchema } from './config';
 import SimulatorInputsSection from './components/SimulatorInputsSection/SimulatorInputsSection';
 import { Stack } from '@mui/system';
 import SimulatorOutputSection from './components/SimulatorOutputSection/SimulatorOutputSection';
+import { industryOptions } from './components/SimulatorInputsSection/InputsData';
 
 const MerchantsSimulatorView = () => {
   const [isLoading, setLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
-      industry: '',
+      industry: industryOptions[0].value,
       monthlyTraffic: 0,
       avgDiscount: 0,
       avgConversion: 0,
@@ -54,7 +55,11 @@ const MerchantsSimulatorView = () => {
               <SimulatorInputsSection />
               <Stack>
                 <SimulatorOutputSection isLoading={isLoading} />
-                <StyledButton variant='contained' onClick={handleSubmit}>
+                <StyledButton
+                  variant='contained'
+                  onClick={handleSubmit}
+                  disabled={isLoading}
+                >
                   Start Hooxing
                 </StyledButton>
               </Stack>

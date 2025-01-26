@@ -45,6 +45,8 @@ export const StyledButton = styled(Button)(({ theme }) => ({
   marginLeft: '2.5rem',
   fontSize: '1rem',
   backgroundColor: theme.palette.primary.main,
+  '&:disabled': { backgroundColor: 'rgba(0, 242, 155, 0.2)' },
+  '&:hover': { '&:disabled': { backgroundColor: 'rgba(0, 242, 155, 0.2)' } },
   [theme.breakpoints.down('md')]: {
     margin: '1rem 0 0 0',
     maxWidth: 400,

@@ -11,10 +11,8 @@ import {
   StyledUpliftAmount,
   StyledUpliftContainer,
   StyledUpliftContentContainer,
-  StyledUpliftSubtitle,
   StyledUpliftTitle,
 } from './SimulatorOutputSection.styles';
-import { Box, Skeleton } from '@mui/material';
 
 const data = {
   budgetTotal: 297168,
