@@ -14,8 +14,6 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@rushstack/eslint-patch": "^1.10.5",
     "eslint": "^9.19.0",
     "eslint-config-next": "^15.1.6"
   }

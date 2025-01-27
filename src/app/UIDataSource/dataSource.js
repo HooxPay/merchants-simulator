@@ -1,9 +1,9 @@
 import {
   getIndustriesDisplayNamesArray,
   getIndustryByDisplayName,
-} from '../industryData/dataUtils';
-import { generateDefaultsForIndustry } from '../industryData/dataUtils';
-import { caclulateUIOutputs } from '../industryData/calculateOutputs';
+} from '../../library/industryData/dataUtils';
+import { generateDefaultsForIndustry } from '../../library/industryData/dataUtils';
+import { caclulateUIOutputs } from '../../library/industryData/calculateOutputs';
 
 //*Get the Indutries display names array to populate the Industries dropdown
 export const getIndustriesNamesArray = () => {
@@ -46,6 +46,7 @@ export const getIndustriesNamesArray = () => {
 export const getUIDefaultsForIndustry = (industryDisplayName) => {
   return generateDefaultsForIndustry(industryDisplayName);
 };
+
 //* Get the UI computed outputs for the selected industry
 //* Called when the user changed UI controls values
 /**

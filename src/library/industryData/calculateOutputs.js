@@ -1,8 +1,8 @@
-import { computeNumberOfOffers } from '../UIDataSource/dataSource.js';
+import { computeNumberOfOffers } from './dataUtils.js';
 import { hooxConstants } from './hooxConstants.js';
 import { formatCurrency } from './dataUtils.js';
 import { getIndustryByDisplayName } from './dataUtils.js';
-i;
+
 const computeConversionUplift = (
   cvrInput,
   cvrIndustry,
@@ -10,12 +10,12 @@ const computeConversionUplift = (
 ) => {
   const converisonUplift =
     (cvrInput / cvrIndustry) * conversionUpliftIndustry * 100;
-  return `+${converisonUplift.toFixed(1)}%`;
+  return converisonUplift;
 };
 
 const computeAOVUplift = (aovInput, aovIndustry, aovUpliftIndustry) => {
   const aovUpliftComputed = (aovInput / aovIndustry) * aovUpliftIndustry * 100;
-  return `+${aovUpliftComputed.toFixed(1)}%`;
+  return aovUpliftComputed;
 };
 
 const computeSalesUplift = (
@@ -31,7 +31,7 @@ const computeSalesUplift = (
     monthlyTrafficInput * cvrInput * aovInput * (1 - avgDiscountInput);
 
   const originalSalesInHooxTransactions =
-    originalTotalSales * hooxConstants.hooxShare;
+    originalTotalSales * hooxConstants.hooxShareInOffers;
 
   const coversionUplift = computeConversionUplift(
     cvrInput,
@@ -39,14 +39,18 @@ const computeSalesUplift = (
     conversionUpliftIndustry
   );
 
-  const aovUplift = computeAOVUplift(aovInput, aovIndustry, aovUpliftIndustry);
+  const aovUplift = computeAOVUplift(
+    aovInput,
+    aovIndustry,
+    conversionUpliftIndustry
+  );
 
   const salesInHooxTransactions =
-    originalSalesInHooxTransactions * coversionUplift * aovUplift;
+    originalSalesInHooxTransactions *
+    (1 + coversionUplift / 100) *
+    (1 + aovUplift / 100);
 
-  const salesUplift = Math.round(
-    salesInHooxTransactions - originalSalesInHooxTransactions
-  );
+  const salesUplift = salesInHooxTransactions - originalSalesInHooxTransactions;
   return formatCurrency(salesUplift);
 };
 
@@ -56,7 +60,7 @@ const computeEstimatedAnnualBudget = (
   avgDiscount
 ) => {
   const numberOfOffers = computeNumberOfOffers(monthlyTrafficInput, cvrInput);
-  return formatCurrency(numberOfOffers * avgDiscount * 12);
+  return numberOfOffers * avgDiscount * 12;
 };
 
 const computeEstimatedAnnualBudgetPerMonth = (estimatedAnnualBudget) => {
@@ -81,6 +85,7 @@ export const caclulateUIOutputs = (
     avgDiscount
   );
 
+  const formattedEstimatedAnnualBudget = formatCurrency(estimatedAnnualBudget);
   const estimatedAnnualBudgetPerMonth = computeEstimatedAnnualBudgetPerMonth(
     estimatedAnnualBudget
   );
@@ -106,12 +111,11 @@ export const caclulateUIOutputs = (
     aovIndustry,
     avgDiscount
   );
-
   return {
-    estimatedAnnualBudget, //Formatted currency
+    estimatedAnnualBudget: formattedEstimatedAnnualBudget, //Formatted currency
     estimatedAnnualBudgetPerMonth, //Formatted currency
-    conversionUplift,
-    aovUplift,
+    conversionUplift: `+${conversionUplift.toFixed(1)}%`,
+    aovUplift: `+${aovUplift.toFixed(1)}%`,
     salesUplift,
   };
 };

@@ -61,8 +61,8 @@ const getInputValues = (industryData) => {
     cvr: {
       //Avg Conversion Rate
       value: industryData.cvr * 100,
-      min: industryData.cvrMin * 100,
-      max: industryData.cvrMax * 100,
+      min: parseFloat((industryData.cvrMin * 100).toFixed(1)),
+      max: parseFloat((industryData.cvrMax * 100).toFixed(1)),
     },
     aov: {
       //Avg Order Value
@@ -71,9 +71,9 @@ const getInputValues = (industryData) => {
       max: industryData.aovMax,
     },
     avgDiscount: {
-      value: industryData.avgDiscount * 100,
-      min: industryData.avgDiscountMin * 100,
-      max: industryData.avgDiscountMax * 100,
+      value: parseFloat((industryData.avgDiscount * 100).toFixed(1)),
+      min: parseFloat((industryData.avgDiscountMin * 100).toFixed(1)),
+      max: parseFloat((industryData.avgDiscountMax * 100).toFixed(1)),
     },
     monthlyTraffic: {
       value: industryData.monthlyTraffic,
@@ -90,7 +90,7 @@ export const computeNumberOfOffers = (monthlyTrafficInput, cvrInput) => {
 
 export const formatCurrency = (amount) => {
   return `$${amount.toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   })}`;
 };
