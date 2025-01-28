@@ -1,5 +1,7 @@
 import { FormikProvider, useFormik } from 'formik';
-import { useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import { debounce } from 'lodash';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 import {
   StyledButton,
@@ -9,38 +11,77 @@ import {
   StyledSubtitle,
   StyledTitle,
 } from './MerchantsSimulatorView.styles';
-import { validationSchema } from './config';
 import SimulatorInputsSection from './components/SimulatorInputsSection/SimulatorInputsSection';
 import { Stack } from '@mui/system';
 import SimulatorOutputSection from './components/SimulatorOutputSection/SimulatorOutputSection';
-import { industryOptions } from './components/SimulatorInputsSection/InputsData';
+import { steps } from '../../MainScreenView';
+import {
+  getUIDefaultsForIndustry,
+  getUIOutputs,
+} from '@/app/UIDataSource/dataSource';
+import { inputsInitialValues } from './components/SimulatorInputsSection/InputsData';
 
-const MerchantsSimulatorView = () => {
-  const [isLoading, setLoading] = useState(false);
+const MerchantsSimulatorView = ({ setStep, industriesArray }) => {
+  const [isLoading, setLoading] = useState(true);
+  const [inputData, setInputData] = useState(inputsInitialValues);
+  const [outputData, setOutputData] = useState({});
+  const targetRef = useRef(null);
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+
+  const scrollToOutput = () => {
+    targetRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   const formik = useFormik({
     initialValues: {
-      industry: industryOptions[0].value,
+      industry: '',
       monthlyTraffic: 0,
       avgDiscount: 0,
-      avgConversion: 0,
-      avgOrder: 0,
+      cvr: 0,
+      aov: 0,
     },
-    validationSchema: validationSchema,
     onSubmit: async (values) => {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
+      setStep(steps.share);
     },
   });
   const {
     values,
     setFieldValue,
     handleSubmit,
-    errors,
-    touched,
-    validateField,
   } = formik;
+
+  const onIndustryChange = (industry) => {
+    setFieldValue('industry', industry);
+    const inputsDefaults = getUIDefaultsForIndustry(industry);
+    setInputData(inputsDefaults);
+    Object.entries(inputsDefaults).map(([key, { value }]) => {
+      setFieldValue(key, value);
+    });
+  };
+
+  const handleValuesChange = () => {
+    setLoading(true);
+    debouncedValuesChange();
+  };
+
+  const debouncedValuesChange = useMemo(
+    () =>
+      debounce(() => {
+        const UIOutputs = getUIOutputs(
+          Number(values.monthlyTraffic),
+          Number(values.avgDiscount) / 100,
+          Number(values.cvr) / 100,
+          Number(values.aov),
+          values.industry
+        );
+        setOutputData(UIOutputs);
+        setLoading(false);
+        !isDesktop && scrollToOutput();
+      }, 600),
+    [setLoading, setOutputData, values, isDesktop]
+  );
+
   return (
     <StyledContainer>
       <FormikProvider value={formik}>
@@ -52,9 +93,18 @@ const MerchantsSimulatorView = () => {
               of 100,000
             </StyledSubtitle>
             <StyledRowContainer>
-              <SimulatorInputsSection />
+              <SimulatorInputsSection
+                industriesArray={industriesArray}
+                onIndustryChange={onIndustryChange}
+                inputData={inputData}
+                handleValuesChange={handleValuesChange}
+              />
               <Stack>
-                <SimulatorOutputSection isLoading={isLoading} />
+                <SimulatorOutputSection
+                  isLoading={isLoading}
+                  outputData={outputData}
+                  ref={targetRef}
+                />
                 <StyledButton
                   variant='contained'
                   onClick={handleSubmit}

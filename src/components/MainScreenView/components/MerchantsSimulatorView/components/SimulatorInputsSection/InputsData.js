@@ -1,36 +1,43 @@
-import { formatNumToReadableText } from '@/utils/math';
-
-export const industryOptions = [
-  { value: 'general', text: 'General (E-commerce)' },
-  { value: 'hello', text: 'hello' },
-  { value: 'world', text: 'world' },
-];
-export const slidersData = [
-  {
-    name: 'monthlyTraffic',
-    label: 'monthly traffic',
-    min: 0,
-    max: 5000000,
-    formatLabel: formatNumToReadableText,
-    onChange: (value) => setFieldValue('monthlyTraffic', value),
-  },
+export const inputsNamesByOrder = [
+  { name: 'monthlyTraffic', label: 'monthly traffic' },
   {
     name: 'avgDiscount',
     label: 'Average discount (%)',
     suffix: '%',
-    onChange: (value) => setFieldValue('avgDiscount', value),
+    step: 0.1,
   },
   {
-    name: 'avgConversion',
+    name: 'cvr',
     label: 'Average conversion (%)',
     suffix: '%',
-    onChange: (value) => setFieldValue('avgConversion', value),
+    step: 0.1,
   },
   {
-    name: 'avgOrder',
+    name: 'aov',
     label: 'Average order ($)',
     prefix: '$',
-    max: 300,
-    onChange: (value) => setFieldValue('avgOrder', value),
   },
 ];
+
+export const inputsInitialValues = {
+  monthlyTraffic: {
+    value: 0,
+    min: 0,
+    max: 500000,
+  },
+  avgDiscount: {
+    value: 0,
+    min: 0,
+    max: 15,
+  },
+  cvr: {
+    value: 0,
+    min: 0,
+    max: 5,
+  },
+  aov: {
+    value: 0,
+    min: 0,
+    max: 300,
+  },
+};

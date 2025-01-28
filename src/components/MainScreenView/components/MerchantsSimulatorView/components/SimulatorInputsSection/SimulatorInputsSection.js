@@ -10,13 +10,18 @@ import {
   StyledSlider,
   StyledSliderTextField,
 } from './SimulatorInputsSection.styles';
-import { industryOptions, slidersData } from './InputsData';
+import { inputsNamesByOrder } from './InputsData';
 
 const formatSliderLabel = (value) => {
   return <NumericFormat value={value} displayType='text' thousandSeparator />;
 };
 
-const SimulatorInputsSection = ({}) => {
+const SimulatorInputsSection = ({
+  industriesArray,
+  onIndustryChange,
+  inputData,
+  handleValuesChange,
+}) => {
   const renderError = (name) => (
     <ErrorMessage
       name={name}
@@ -39,13 +44,15 @@ const SimulatorInputsSection = ({}) => {
               {...field}
               value={field.value}
               onChange={(e) => {
-                form.setFieldValue('industry', e.target.value);
+                onIndustryChange(e.target.value);
+                handleValuesChange();
               }}
+              placeholder={'Please choose industry'}
             >
-              {industryOptions.map((option, index) => {
+              {industriesArray.map((industry, index) => {
                 return (
-                  <MenuItem key={`${index}-meniItem`} value={option.value}>
-                    {option.text}
+                  <MenuItem key={`${index}-menuItem`} value={industry}>
+                    {industry}
                   </MenuItem>
                 );
               })}
@@ -54,21 +61,15 @@ const SimulatorInputsSection = ({}) => {
         </Field>
         {renderError('industry')}
       </Box>
-      {slidersData.map((slider, index) => {
-        const {
-          name,
-          label,
-          options = [],
-          min = 0,
-          max = 100,
-          step = 1,
-        } = slider;
+      {inputsNamesByOrder.map((input) => {
+        const { name, label, suffix = '', prefix = '', step = 1 } = input;
+        const { min, max } = inputData[input.name];
         return (
           <Box
             display='flex'
             flexDirection='column'
             mb={2}
-            key={`${index}-sliderContainer`}
+            key={`${name}-sliderContainer`}
           >
             <Box
               display='flex'
@@ -82,15 +83,16 @@ const SimulatorInputsSection = ({}) => {
                 {({ field, form }) => (
                   <StyledSliderTextField
                     value={field.value}
-                    onChange={(e) =>
-                      form.setFieldValue(name, e.target.value || min)
-                    }
+                    onChange={(e) => {
+                      form.setFieldValue(name, e.target.value || min);
+                      handleValuesChange();
+                    }}
                     name={name}
                     slotProps={{
                       input: {
                         inputProps: {
-                          prefix: slider.prefix,
-                          suffix: slider.suffix,
+                          prefix: prefix,
+                          suffix: suffix,
                           min: min,
                           max: max,
                         },
@@ -112,7 +114,10 @@ const SimulatorInputsSection = ({}) => {
                   max={max}
                   step={step}
                   valueLabelFormat={(value) => formatSliderLabel(value)}
-                  onChange={(e, value) => form.setFieldValue(name, value)}
+                  onChange={(e, value) => {
+                    form.setFieldValue(name, value);
+                    handleValuesChange();
+                  }}
                   valueLabelDisplay='auto'
                 />
               )}

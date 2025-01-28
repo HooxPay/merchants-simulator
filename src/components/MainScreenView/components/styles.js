@@ -4,7 +4,7 @@ export const useStyles = () => {
   const theme = useTheme();
   return {
     container: {
-      maxWidth: 750,
+      maxWidth: 950,
       padding: '2.5rem',
       boxShadow: [0, theme.shadows[3]],
       borderRadius: [0, theme.shape.borderRadius],

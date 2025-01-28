@@ -115,8 +115,8 @@ export const industriesDataObject = {
     monthlyTrafficMax: 5000000,
   },
   luxeryJewelry: {
-    keyName: 'luxeryJewelry',
-    displayName: 'Luxery & Jewelry',
+    keyName: 'luxuryJewelry',
+    displayName: 'Luxury & Jewelry',
     cvr: 0.008,
     cvrMin: 0.004,
     cvrMax: 0.012,

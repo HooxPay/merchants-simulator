@@ -1,10 +1,9 @@
 import styled from '@emotion/styled';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Divider, Typography } from '@mui/material';
 
 export const StyledContainer = styled(Box)(({ theme }) => ({
-  maxWidth: 1050,
+  maxWidth: 950,
   margin: '0 auto',
-  marginBottom: '5rem',
 }));
 
 export const StyledContentContainer = styled(Box)(({ theme }) => ({
@@ -16,7 +15,7 @@ export const StyledContentContainer = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.common.white,
   [theme.breakpoints.down('md')]: {
     padding: '2rem',
-    boxShadow: 0,
+    boxShadow: theme.shadows[0],
     borderRadius: 0,
   },
 }));
@@ -30,15 +29,7 @@ export const StyledSubtitle = styled(Typography)(({ theme }) => ({
   fontSize: '1rem',
   fontWeight: 400,
   color: 'rgba(0, 0, 0, 0.8)',
-}));
-
-export const StyledRowContainer = styled(Box)(({ theme }) => ({
-  flexDirection: 'row',
-  display: 'flex',
-  [theme.breakpoints.down('md')]: {
-    flexDirection: 'column',
-    display: 'block',
-  },
+  padding: '1rem 0 2rem 0',
 }));
 
 export const StyledButton = styled(Button)(({ theme }) => ({
@@ -52,4 +43,31 @@ export const StyledButton = styled(Button)(({ theme }) => ({
     margin: '1rem 0 0 0',
     maxWidth: 400,
   },
+}));
+
+export const StyledFooterContainer = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  right: 0,
+  bottom: 0,
+  width: '100%',
+  backgroundColor: theme.palette.common.white,
+  zIndex: 1,
+  [theme.breakpoints.down('md')]: {
+    position: 'fixed',
+  },
+}));
+export const StyledButtonsContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: '1rem',
+  justifyContent: 'flex-end',
+  padding: '20px',
+}));
+
+export const StyledDivider = styled(Divider)(({ theme }) => ({}));
+
+export const StyledBottomSubtitle = styled(Typography)(({ theme }) => ({
+  fontSize: '1rem',
+  fontWeight: 400,
+  color: 'rgba(0, 0, 0, 0.8)',
+  padding: '1rem 0 6rem 0',
 }));

@@ -1,110 +1,72 @@
-import React from 'react';
-import { NumericFormat } from 'react-number-format';
+import { forwardRef } from 'react';
 
 import {
   StyledBudgetMonthly,
+  StyledBudgetMonthlySkeleton,
   StyledBudgetSummaryContainer,
   StyledBudgetTotal,
+  StyledBudgetTotalSkeleton,
   StyledContainer,
   StyledSkeleton,
   StyledTitle,
   StyledUpliftAmount,
   StyledUpliftContainer,
   StyledUpliftContentContainer,
+  StyledUpliftSkeleton,
   StyledUpliftTitle,
 } from './SimulatorOutputSection.styles';
 
-const data = {
-  budgetTotal: 297168,
-  budgetMonthly: 24764,
-  conversionUplift: 7.8,
-  AOVUplift: 2.5,
-  salesUplift: 38308,
-};
-
-const formatDecimalNumber = (value) => {
-  const safeValue = value || 0;
-  return (
-    <NumericFormat
-      value={safeValue}
-      displayType='text'
-      decimalScale={1}
-      prefix={'+'}
-      suffix={'%'}
-    />
-  );
-};
-
-const formatThousandsNumber = (value, suffix = '') => {
-  const safeValue = value || 0;
-  return (
-    <NumericFormat
-      value={safeValue}
-      displayType='text'
-      thousandSeparator
-      prefix={'$'}
-      suffix={suffix}
-    />
-  );
-};
-
-const SimulatorOutputSection = ({ isLoading }) => {
+const SimulatorOutputSection = forwardRef(({ isLoading, outputData }, ref) => {
   const renderUplift = (name, value) => {
     return (
       <StyledUpliftContentContainer>
         <StyledUpliftTitle>{name}</StyledUpliftTitle>
         {isLoading ? (
-          <StyledSkeleton
-            variant='rectangular'
-            width={100}
-            height={20}
-          />
+          <StyledUpliftSkeleton variant='rectangular' width={85} height={20} />
         ) : (
-          <StyledUpliftAmount>
-            {name === 'Sales uplift'
-              ? formatThousandsNumber(value)
-              : formatDecimalNumber(value)}
-          </StyledUpliftAmount>
+          <StyledUpliftAmount>{value}</StyledUpliftAmount>
         )}
       </StyledUpliftContentContainer>
     );
   };
   return (
-    <StyledContainer>
+    <StyledContainer ref={ref}>
       <StyledTitle>
         Estimated annual budget we will deploy from card issuers:
       </StyledTitle>
       <StyledBudgetSummaryContainer>
         {isLoading ? (
-          <StyledSkeleton
+          <StyledBudgetTotalSkeleton
             variant='rectangular'
             width={260}
-            height={60}
+            height={50}
           />
         ) : (
           <StyledBudgetTotal>
-            {formatThousandsNumber(data.budgetTotal)}
+            {outputData?.estimatedAnnualBudget}
           </StyledBudgetTotal>
         )}
         {isLoading ? (
-          <StyledSkeleton
+          <StyledBudgetMonthlySkeleton
             variant='rectangular'
             width={190}
             height={20}
           />
         ) : (
           <StyledBudgetMonthly>
-            {formatThousandsNumber(data.budgetMonthly, '/month')}
+            {outputData?.estimatedAnnualBudgetPerMonth}/month
           </StyledBudgetMonthly>
         )}
       </StyledBudgetSummaryContainer>
       <StyledUpliftContainer>
-        {renderUplift('Conversion uplift', data.conversionUplift)}
-        {renderUplift('AOV uplift', data.AOVUplift)}
-        {renderUplift('Sales uplift', data.salesUplift)}
+        {renderUplift('Conversion uplift', outputData?.conversionUplift)}
+        {renderUplift('AOV uplift', outputData?.aovUplift)}
+        {renderUplift('Sales uplift', outputData?.salesUplift)}
       </StyledUpliftContainer>
     </StyledContainer>
   );
-};
+});
+
+SimulatorOutputSection.displayName = 'SimulatorOutputSection';
 
 export default SimulatorOutputSection;
