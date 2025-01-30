@@ -22,7 +22,6 @@ export const StyledInputContainer = styled(Box)(({ theme }) => ({
 }));
 
 export const StyledSlider = styled(Slider)(({ theme }) => ({
-  marginBottom: '0.75rem',
   color: '#916AFF',
   '& .MuiSlider-thumb': {
     zIndex: 1,
@@ -53,5 +52,5 @@ export const StyledInputLabel = styled(InputLabel)(({ theme }) => ({
   fontSize: '0.875rem',
   textTransform: 'uppercase',
   fontWeight: '400',
-  marginBottom: '8px',
+  marginBottom: '0.5rem',
 }));

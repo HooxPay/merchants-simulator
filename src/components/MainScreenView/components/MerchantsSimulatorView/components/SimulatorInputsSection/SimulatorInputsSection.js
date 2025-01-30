@@ -1,37 +1,19 @@
-import React from 'react';
-import { ErrorMessage, Field } from 'formik';
-import { NumericFormat } from 'react-number-format';
+import { Field } from 'formik';
 
 import { Box, MenuItem, Typography } from '@mui/material';
 import {
   StyledInputContainer,
   StyledInputLabel,
   StyledSelect,
-  StyledSlider,
-  StyledSliderTextField,
 } from './SimulatorInputsSection.styles';
-import { inputsNamesByOrder } from './InputsData';
-
-const formatSliderLabel = (value) => {
-  return <NumericFormat value={value} displayType='text' thousandSeparator />;
-};
+import CustomSlider from './CustomSlider';
 
 const SimulatorInputsSection = ({
-  industriesArray,
+  industriesDisplayNamesArray,
   onIndustryChange,
   inputData,
   handleValuesChange,
 }) => {
-  const renderError = (name) => (
-    <ErrorMessage
-      name={name}
-      render={(msg) => (
-        <Typography color='error' variant='body2' sx={{ marginTop: '-20px' }}>
-          {msg}
-        </Typography>
-      )}
-    />
-  );
   return (
     <StyledInputContainer>
       <Box>
@@ -47,118 +29,71 @@ const SimulatorInputsSection = ({
                 onIndustryChange(e.target.value);
                 handleValuesChange();
               }}
-              placeholder={'Please choose industry'}
+              displayEmpty
+              renderValue={(selected) =>
+                selected ? (
+                  selected
+                ) : (
+                  <Typography
+                    sx={{
+                      color: (theme) => theme.shadesOfGrey.light,
+                      fontSize: '0.875rem',
+                    }}
+                  >
+                    Select an industry
+                  </Typography>
+                )
+              }
             >
-              {industriesArray.map((industry, index) => {
+              {industriesDisplayNamesArray.map((industryDisplayName, index) => {
                 return (
-                  <MenuItem key={`${index}-menuItem`} value={industry}>
-                    {industry}
+                  <MenuItem
+                    key={`${index}-menuItem`}
+                    value={industryDisplayName}
+                  >
+                    {industryDisplayName}
                   </MenuItem>
                 );
               })}
             </StyledSelect>
           )}
         </Field>
-        {renderError('industry')}
       </Box>
-      {inputsNamesByOrder.map((input) => {
-        const { name, label, suffix = '', prefix = '', step = 1 } = input;
-        const { min, max } = inputData[input.name];
-        return (
-          <Box
-            display='flex'
-            flexDirection='column'
-            mb={2}
-            key={`${name}-sliderContainer`}
-          >
-            <Box
-              display='flex'
-              justifyContent='space-between'
-              alignItems='center'
-            >
-              <StyledInputLabel htmlFor={name}>
-                {label || name}
-              </StyledInputLabel>
-              <Field name={name}>
-                {({ field, form }) => (
-                  <StyledSliderTextField
-                    value={field.value}
-                    onChange={(e) => {
-                      form.setFieldValue(name, e.target.value || min);
-                      handleValuesChange();
-                    }}
-                    name={name}
-                    slotProps={{
-                      input: {
-                        inputProps: {
-                          prefix: prefix,
-                          suffix: suffix,
-                          min: min,
-                          max: max,
-                        },
-                        inputComponent: NumericFormatCustom,
-                      },
-                    }}
-                    variant='standard'
-                  />
-                )}
-              </Field>
-            </Box>
-
-            <Field name={name}>
-              {({ field, form }) => (
-                <StyledSlider
-                  {...field}
-                  value={field.value || min}
-                  min={min}
-                  max={max}
-                  step={step}
-                  valueLabelFormat={(value) => formatSliderLabel(value)}
-                  onChange={(e, value) => {
-                    form.setFieldValue(name, value);
-                    handleValuesChange();
-                  }}
-                  valueLabelDisplay='auto'
-                />
-              )}
-            </Field>
-            {renderError(name)}
-          </Box>
-        );
-      })}
+      <CustomSlider
+        name={'monthlyTraffic'}
+        label={'monthly traffic'}
+        handleValuesChange={handleValuesChange}
+        min={inputData.monthlyTraffic.min}
+        max={inputData.monthlyTraffic.max}
+      />
+      <CustomSlider
+        name={'avgDiscount'}
+        label={'average discount (%)'}
+        handleValuesChange={handleValuesChange}
+        min={inputData.avgDiscount.min}
+        max={inputData.avgDiscount.max}
+        suffix={'%'}
+        step={0.1}
+      />
+      <CustomSlider
+        name={'cvr'}
+        label={'average conversion (%)'}
+        handleValuesChange={handleValuesChange}
+        min={inputData.cvr.min}
+        max={inputData.cvr.max}
+        suffix={'%'}
+        step={0.1}
+      />
+      <CustomSlider
+        name={'aov'}
+        label={'average order ($)'}
+        handleValuesChange={handleValuesChange}
+        min={inputData.aov.min}
+        max={inputData.aov.max}
+        prefix={'$'}
+      />
     </StyledInputContainer>
   );
 };
-
-const NumericFormatCustom = React.forwardRef(function NumericFormatCustom(
-  props,
-  ref
-) {
-  const { onChange, min, max, ...other } = props;
-  return (
-    <NumericFormat
-      {...other}
-      getInputRef={ref}
-      isAllowed={({ floatValue }) => {
-        if (floatValue == null) return true;
-        const minCondition = min != null ? floatValue >= min : true;
-        const maxCondition = max != null ? floatValue <= max : true;
-        return minCondition && maxCondition;
-      }}
-      allowNegative={false}
-      allowLeadingZeros={false}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      thousandSeparator
-      valueIsNumericString
-    />
-  );
-});
 
 export default SimulatorInputsSection;

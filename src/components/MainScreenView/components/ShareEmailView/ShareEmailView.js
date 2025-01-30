@@ -1,4 +1,4 @@
-import { ErrorMessage, Field, FormikProvider, useFormik } from 'formik';
+import { FormikProvider, useFormik } from 'formik';
 import { useState } from 'react';
 
 import {
@@ -12,58 +12,22 @@ import {
   StyledTitle,
 } from './ShareEmailView.styles';
 import { validationSchema } from './config';
-import { Box, Button, InputLabel, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Button,
+  CircularProgress,
+  Snackbar,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { steps } from '../../MainScreenView';
+import CustomField from './CustomField';
 
-const ShareEmailView = ({ setStep }) => {
+const ShareEmailView = ({ setStep, emailData }) => {
   const [isLoading, setLoading] = useState(false);
-
-  const CustomField = ({ name, label }) => {
-    return (
-      <Box style={{ marginBottom: '16px', maxWidth: 400 }}>
-        <InputLabel
-          htmlFor={name}
-          margin={0}
-          sx={{
-            fontFamily: (theme) => theme.typography.spaceMono.fontFamily,
-            fontSize: '0.875rem',
-            fontWeight: '400',
-            textTransform: 'uppercase',
-          }}
-        >
-          {label}
-        </InputLabel>
-        <Field name={name}>
-          {({ field, form }) => (
-            <TextField
-              {...field}
-              type={'text'}
-              id={name}
-              fullWidth
-              placeholder={'Enter your ' + label}
-              variant='outlined'
-              error={Boolean(form.touched[name] && form.errors[name])}
-              sx={{
-                margin: 0,
-              }}
-            />
-          )}
-        </Field>
-        <ErrorMessage
-          name={name}
-          render={(msg) => (
-            <Typography
-              color='error'
-              variant='body2'
-              sx={{ marginTop: '16px' }}
-            >
-              {msg}
-            </Typography>
-          )}
-        />
-      </Box>
-    );
-  };
+  const [isEmailSentSuccess, setEmailSentSuccess] = useState(true);
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   const formik = useFormik({
     initialValues: {
@@ -72,17 +36,29 @@ const ShareEmailView = ({ setStep }) => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      setStep(steps.thankYou);
+      try {
+        setLoading(true);
+        const response = await fetch('/api/send-email', {
+          method: 'POST',
+          body: JSON.stringify({
+            emailData: emailData,
+            personalIdentifiers: { fullName: values.name, email: values.email },
+          }),
+        });
+        if (response.status === 200) {
+          setStep(steps.thankYou);
+        } else {
+          setEmailSentSuccess(false);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error(error);
+        setEmailSentSuccess(false);
+        setLoading(false);
+      }
     },
   });
-  const {
-    values,
-    setFieldValue,
-    handleSubmit,
-    errors,
-    touched,
-    validateField,
-  } = formik;
+  const { handleSubmit } = formik;
   return (
     <StyledContainer>
       <FormikProvider value={formik}>
@@ -117,13 +93,49 @@ const ShareEmailView = ({ setStep }) => {
                   type='submit'
                   variant='contained'
                   color='primary'
-                  sx={{ minWidth: 96 }}
+                  disabled={isLoading}
+                  sx={{ width: 96 }}
                 >
-                  Send
+                  {isLoading ? (
+                    <CircularProgress
+                      sx={{ color: (theme) => theme.palette.common.white }}
+                      size='1.5rem'
+                    />
+                  ) : (
+                    'Send'
+                  )}
                 </Button>
               </StyledButtonsContainer>
             </StyledFooterContainer>
           </StyledContentContainer>
+          <Snackbar
+            open={!isEmailSentSuccess}
+            onClose={() => {
+              setEmailSentSuccess(true);
+            }}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: isDesktop ? 'right' : 'center',
+            }}
+          >
+            <Alert
+              severity='error'
+              onClose={() => {
+                setEmailSentSuccess(true);
+              }}
+              action={
+                <Button
+                  onClick={() => handleSubmit()}
+                  color='inherit'
+                  size='small'
+                >
+                  RETRY
+                </Button>
+              }
+            >
+              Email failed to send
+            </Alert>
+          </Snackbar>
         </form>
       </FormikProvider>
     </StyledContainer>

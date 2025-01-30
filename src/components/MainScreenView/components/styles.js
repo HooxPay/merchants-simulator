@@ -4,7 +4,7 @@ export const useStyles = () => {
   const theme = useTheme();
   return {
     container: {
-      maxWidth: 950,
+      maxWidth: 700,
       padding: '2.5rem',
       boxShadow: [0, theme.shadows[3]],
       borderRadius: [0, theme.shape.borderRadius],
@@ -18,6 +18,7 @@ export const useStyles = () => {
       fontWeight: 500,
       lineHeight: '52px',
       paddingBottom: '1rem',
+      textAlign: 'center',
     },
     subtitle: {
       display: 'inline',

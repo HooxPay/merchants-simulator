@@ -15,17 +15,24 @@ export const steps = {
   share: 'shareEmail',
   thankYou: 'thankYou',
 };
-const MainScreenView = ({industriesArray}) => {
+const MainScreenView = ({ industriesDisplayNamesArray }) => {
   const [step, setStep] = useState(steps.splash);
+  const [emailData, setEmailData] = useState({});
 
   const renderStepComponent = () => {
     switch (step) {
       case steps.splash:
         return <SplashScreenView setStep={setStep} />;
       case steps.simulator:
-        return <MerchantsSimulatorView setStep={setStep} industriesArray={industriesArray}/>;
+        return (
+          <MerchantsSimulatorView
+            setStep={setStep}
+            industriesDisplayNamesArray={industriesDisplayNamesArray}
+            setEmailData={setEmailData}
+          />
+        );
       case steps.share:
-        return <ShareEmailView setStep={setStep} />;
+        return <ShareEmailView setStep={setStep} emailData={emailData} />;
       case steps.thankYou:
         return <ThankYouView />;
     }
@@ -33,7 +40,7 @@ const MainScreenView = ({industriesArray}) => {
   return step === steps.thankYou ? (
     renderStepComponent()
   ) : (
-    <Box>
+    <Box sx={{ backgroundColor: (theme) => theme.palette.common.white }}>
       <Header />
       <HeaderOverflowingLayout>
         {renderStepComponent()}
