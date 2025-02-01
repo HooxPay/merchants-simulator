@@ -1,5 +1,4 @@
 import { Box, Button, Grid2, Paper, Stack, Typography } from '@mui/material';
-import React from 'react';
 import { useStyles } from './styles';
 import { steps } from '../MainScreenView';
 
@@ -11,19 +10,19 @@ const SplashScreenView = ({ setStep }) => {
         <Stack alignItems={'center'}>
           <Box>
             <Typography sx={styles.title}>
-              Target and engage your cardholders
+              Unlock New Revenue Opportunities with Hoox
             </Typography>
           </Box>
           <Box>
             <Typography sx={styles.subtitle}>Present real-time </Typography>
             <Typography sx={styles.embedded}>embedded offers </Typography>
             <Typography sx={styles.subtitle2}>
-              at the point of purchase
+              funded by credit card issuers
             </Typography>
           </Box>
           <Stack sx={styles.footer}>
             <Typography sx={styles.footerText}>
-              Want to see a boost in card usage?
+              Want to see a boost in sales?
             </Typography>
             <Typography sx={styles.footerText}>
               Try it out yourself...

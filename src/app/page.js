@@ -1,9 +1,11 @@
-import MainScreenView from "@/components/MainScreenView/MainScreenView"
+import MainScreenView from '@/components/MainScreenView/MainScreenView';
+import { getIndustriesNamesArray } from './UIDataSource/dataSource';
 
 const Home = () => {
+  const industriesDisplayNamesArray = getIndustriesNamesArray();
   return (
-    <MainScreenView/>
-  )
-}
+    <MainScreenView industriesDisplayNamesArray={industriesDisplayNamesArray} />
+  );
+};
 
-export default Home
+export default Home;

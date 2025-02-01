@@ -1,5 +1,8 @@
 import { FormikProvider, useFormik } from 'formik';
-import { useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import { debounce } from 'lodash';
+import { toPng } from 'html-to-image';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 
 import {
   StyledButton,
@@ -9,65 +12,156 @@ import {
   StyledSubtitle,
   StyledTitle,
 } from './MerchantsSimulatorView.styles';
-import { validationSchema } from './config';
 import SimulatorInputsSection from './components/SimulatorInputsSection/SimulatorInputsSection';
 import { Stack } from '@mui/system';
 import SimulatorOutputSection from './components/SimulatorOutputSection/SimulatorOutputSection';
-import { industryOptions } from './components/SimulatorInputsSection/InputsData';
+import { steps } from '../../MainScreenView';
+import {
+  getUIDefaultsForIndustry,
+  getUIOutputs,
+} from '@/app/UIDataSource/dataSource';
 
-const MerchantsSimulatorView = () => {
-  const [isLoading, setLoading] = useState(false);
+const MerchantsSimulatorView = ({
+  setStep,
+  industriesDisplayNamesArray,
+  setEmailData,
+}) => {
+  const inputInitialValues = getUIDefaultsForIndustry('avg');
+  const [isLoading, setLoading] = useState(true);
+  const [inputData, setInputData] = useState(inputInitialValues);
+  const [outputData, setOutputData] = useState({});
+  const targetRef = useRef(null);
+  const outputRef = useRef(null);
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+
+  const scrollToOutput = () => {
+    targetRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const generateOutputImage = async () => {
+    if (outputRef.current) {
+      try {
+        outputRef.current.style.zIndex = -1;
+        const dataUrl = await toPng(outputRef.current);
+        const blob = await fetch(dataUrl).then((res) => res.blob());
+        const file = new File([blob], 'output-image.png', {
+          type: 'image/png',
+        });
+
+        return file;
+      } catch (error) {
+        console.error('Error generating output image:', error);
+      }
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
-      industry: industryOptions[0].value,
+      industry: '',
       monthlyTraffic: 0,
       avgDiscount: 0,
-      avgConversion: 0,
-      avgOrder: 0,
+      cvr: 0,
+      aov: 0,
     },
-    validationSchema: validationSchema,
     onSubmit: async (values) => {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
+      const outputImage = await generateOutputImage();
+      setEmailData({
+        outputImage,
+        monthlyTraffic: values.monthlyTraffic,
+        incentivesBudget: outputData.estimatedAnnualBudget,
+        monthlySalesIncrease: outputData.salesUplift,
+      });
+      setStep(steps.share);
     },
   });
-  const {
-    values,
-    setFieldValue,
-    handleSubmit,
-    errors,
-    touched,
-    validateField,
-  } = formik;
+  const { values, setFieldValue, handleSubmit } = formik;
+
+  const onIndustryChange = (industry) => {
+    setFieldValue('industry', industry);
+    const inputsDefaults = getUIDefaultsForIndustry(industry);
+    setInputData(inputsDefaults);
+    Object.entries(inputsDefaults).map(([key, { value }]) => {
+      setFieldValue(key, value);
+    });
+  };
+
+  const handleValuesChange = () => {
+    setLoading(true);
+    debouncedValuesChange();
+  };
+
+  const debouncedValuesChange = useMemo(
+    () =>
+      debounce(() => {
+        const UIOutputs = getUIOutputs(
+          Number(values.monthlyTraffic),
+          Number(values.avgDiscount) / 100,
+          Number(values.cvr) / 100,
+          Number(values.aov),
+          values.industry
+        );
+        setOutputData(UIOutputs);
+        setLoading(false);
+        !isDesktop && scrollToOutput();
+      }, 600),
+    [setLoading, setOutputData, values, isDesktop]
+  );
+
   return (
-    <StyledContainer>
-      <FormikProvider value={formik}>
-        <form onSubmit={handleSubmit}>
-          <StyledContentContainer>
-            <StyledTitle>Merchant simulator</StyledTitle>
-            <StyledSubtitle>
-              This simulator is optimized for use with a minimum monthly traffic
-              of 100,000
-            </StyledSubtitle>
-            <StyledRowContainer>
-              <SimulatorInputsSection />
-              <Stack>
-                <SimulatorOutputSection isLoading={isLoading} />
-                <StyledButton
-                  variant='contained'
-                  onClick={handleSubmit}
-                  disabled={isLoading}
-                >
-                  Start Hooxing
-                </StyledButton>
-              </Stack>
-            </StyledRowContainer>
-          </StyledContentContainer>
-        </form>
-      </FormikProvider>
-    </StyledContainer>
+    <Box>
+      <StyledContainer>
+        <FormikProvider value={formik}>
+          <form onSubmit={handleSubmit}>
+            <StyledContentContainer>
+              <StyledTitle>Merchant simulator</StyledTitle>
+              <StyledSubtitle>
+                This simulator is optimized for use with a minimum monthly
+                traffic of 100,000
+              </StyledSubtitle>
+              <StyledRowContainer>
+                <SimulatorInputsSection
+                  industriesDisplayNamesArray={industriesDisplayNamesArray}
+                  onIndustryChange={onIndustryChange}
+                  inputData={inputData}
+                  handleValuesChange={handleValuesChange}
+                />
+                <Stack>
+                  <SimulatorOutputSection
+                    isLoading={isLoading}
+                    outputData={outputData}
+                    ref={targetRef}
+                  />
+                  <StyledButton
+                    variant='contained'
+                    onClick={handleSubmit}
+                    disabled={isLoading}
+                  >
+                    Start Hooxing
+                  </StyledButton>
+                </Stack>
+              </StyledRowContainer>
+            </StyledContentContainer>
+          </form>
+        </FormikProvider>
+      </StyledContainer>
+      {/* Invisible output rendering in order to generate an image */}
+      <div
+        ref={outputRef}
+        style={{
+          position: 'absolute',
+          top: 0,
+          zIndex: -10000,
+        }}
+      >
+        <SimulatorOutputSection
+          isLoading={isLoading}
+          outputData={outputData}
+          ref={targetRef}
+          isEmailImage={true}
+        />
+      </div>
+    </Box>
   );
 };
 
