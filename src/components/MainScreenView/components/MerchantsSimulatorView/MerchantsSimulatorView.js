@@ -67,7 +67,7 @@ const MerchantsSimulatorView = ({
     onSubmit: async (values) => {
       const outputImage = await generateOutputImage();
       setEmailData({
-        outputImage,
+        outputImage: outputImage,
         monthlyTraffic: values.monthlyTraffic,
         incentivesBudget: outputData.estimatedAnnualBudget,
         monthlySalesIncrease: outputData.salesUplift,

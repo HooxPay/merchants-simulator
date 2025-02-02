@@ -22,6 +22,7 @@ import {
 } from '@mui/material';
 import { steps } from '../../MainScreenView';
 import CustomField from './CustomField';
+import { preparePayload } from './utils';
 
 const ShareEmailView = ({ setStep, emailData }) => {
   const [isLoading, setLoading] = useState(false);
@@ -38,12 +39,10 @@ const ShareEmailView = ({ setStep, emailData }) => {
     onSubmit: async (values) => {
       try {
         setLoading(true);
+        const payload = preparePayload(values, emailData);
         const response = await fetch('/api/send-email', {
           method: 'POST',
-          body: JSON.stringify({
-            emailData: emailData,
-            personalIdentifiers: { fullName: values.name, email: values.email },
-          }),
+          body: payload,
         });
         if (response.status === 200) {
           setStep(steps.thankYou);
@@ -109,7 +108,7 @@ const ShareEmailView = ({ setStep, emailData }) => {
             </StyledFooterContainer>
           </StyledContentContainer>
           <Snackbar
-            open={!isEmailSentSuccess}
+            open={!isEmailSentSuccess && !isLoading}
             onClose={() => {
               setEmailSentSuccess(true);
             }}

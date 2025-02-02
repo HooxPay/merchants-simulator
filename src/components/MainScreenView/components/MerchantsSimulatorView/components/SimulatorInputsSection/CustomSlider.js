@@ -20,6 +20,17 @@ const formatSliderLabel = (value) => {
   );
 };
 
+const stripAndParseValue = (value) => {
+  const prefix = '$';
+  const suffix = '%';
+
+  return Number(
+    value
+      .replace(new RegExp(`^${prefix}`), '')
+      .replace(new RegExp(`${suffix}$`), '')
+  );
+};
+
 const CustomSlider = ({
   name,
   label,
@@ -44,10 +55,13 @@ const CustomSlider = ({
           {({ field, form }) => (
             <StyledSliderTextField
               value={field.value}
-              onChange={(e) => {
-                form.setFieldValue(name, e.target.value || min);
-                //  handleValuesChange();
-              }}
+              onChange={(e) =>
+                form.setFieldValue(
+                  name,
+                  stripAndParseValue(e.target.value) || min
+                )
+              }
+              onBlur={handleValuesChange}
               name={name}
               slotProps={{
                 input: {
