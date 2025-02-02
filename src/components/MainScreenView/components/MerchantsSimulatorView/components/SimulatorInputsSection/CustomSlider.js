@@ -46,7 +46,7 @@ const CustomSlider = ({
               value={field.value}
               onChange={(e) => {
                 form.setFieldValue(name, e.target.value || min);
-                handleValuesChange();
+                //  handleValuesChange();
               }}
               name={name}
               slotProps={{
@@ -76,6 +76,10 @@ const CustomSlider = ({
             step={step}
             valueLabelFormat={(value) => formatSliderLabel(value)}
             onChange={(e, value) => {
+              form.setFieldValue(name, value);
+              //  handleValuesChange();
+            }}
+            onChangeCommitted={(event, value) => {
               form.setFieldValue(name, value);
               handleValuesChange();
             }}

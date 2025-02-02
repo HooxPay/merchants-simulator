@@ -114,7 +114,7 @@ const MerchantsSimulatorView = ({
         <FormikProvider value={formik}>
           <form onSubmit={handleSubmit}>
             <StyledContentContainer>
-              <StyledTitle>Merchant simulator</StyledTitle>
+              <StyledTitle>Merchant Simulator</StyledTitle>
               <StyledSubtitle>
                 This simulator is optimized for use with a minimum monthly
                 traffic of 100,000
