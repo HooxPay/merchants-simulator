@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Field } from 'formik';
 import { NumericFormat } from 'react-number-format';
 
@@ -41,6 +41,8 @@ const CustomSlider = ({
   suffix = '',
   step = 1,
 }) => {
+  const [displayValue, setDisplayValue] = useState('');
+
   return (
     <Box
       display='flex'
@@ -52,31 +54,41 @@ const CustomSlider = ({
       <Box display='flex' justifyContent='space-between' alignItems='center'>
         <StyledInputLabel htmlFor={name}>{label || name}</StyledInputLabel>
         <Field name={name}>
-          {({ field, form }) => (
-            <StyledSliderTextField
-              value={field.value}
-              onChange={(e) =>
-                form.setFieldValue(
-                  name,
-                  stripAndParseValue(e.target.value) || min
-                )
-              }
-              onBlur={handleValuesChange}
-              name={name}
-              slotProps={{
-                input: {
-                  inputProps: {
-                    prefix: prefix,
-                    suffix: suffix,
-                    min: min,
-                    max: max,
+          {({ field, form }) => {
+            const handleBlur = () => {
+              let parsedValue = stripAndParseValue(displayValue);
+
+              if (parsedValue < min) parsedValue = min;
+              if (parsedValue > max) parsedValue = max;
+
+              form.setFieldValue(name, parsedValue);
+              setDisplayValue(parsedValue.toString());
+              handleValuesChange();
+            };
+            return (
+              <StyledSliderTextField
+                value={field.value}
+                onChange={(e) => {
+                  setDisplayValue(e.target.value);
+                }}
+                onBlur={handleBlur}
+                name={name}
+                slotProps={{
+                  input: {
+                    inputProps: {
+                      prefix: prefix,
+                      suffix: suffix,
+                      min: min,
+                      max: max,
+                      maxLength: 10,
+                    },
+                    inputComponent: NumericFormatCustom,
                   },
-                  inputComponent: NumericFormatCustom,
-                },
-              }}
-              variant='standard'
-            />
-          )}
+                }}
+                variant='standard'
+              />
+            );
+          }}
         </Field>
       </Box>
 
@@ -109,17 +121,17 @@ const NumericFormatCustom = React.forwardRef(function NumericFormatCustom(
   props,
   ref
 ) {
-  const { onChange, min, max, ...other } = props;
+  const { onChange, ...other } = props;
   return (
     <NumericFormat
       {...other}
       getInputRef={ref}
-      isAllowed={({ floatValue }) => {
-        if (floatValue == null) return true;
-        const minCondition = min != null ? floatValue >= min : true;
-        const maxCondition = max != null ? floatValue <= max : true;
-        return minCondition && maxCondition;
-      }}
+      // isAllowed={({ floatValue }) => {
+      //   if (floatValue == null) return true;
+      //   const minCondition = min != null ? floatValue >= min : true;
+      //   const maxCondition = max != null ? floatValue <= max : true;
+      //   return minCondition && maxCondition;
+      // }}
       allowNegative={false}
       allowLeadingZeros={false}
       onValueChange={(values) => {

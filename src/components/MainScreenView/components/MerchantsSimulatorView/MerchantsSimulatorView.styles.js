@@ -16,7 +16,7 @@ export const StyledContentContainer = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.common.white,
   [theme.breakpoints.down('md')]: {
     padding: '2rem',
-    boxShadow: 0,
+    boxShadow: 'none',
     borderRadius: 0,
   },
 }));

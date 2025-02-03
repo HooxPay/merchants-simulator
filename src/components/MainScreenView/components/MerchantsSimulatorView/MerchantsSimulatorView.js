@@ -157,7 +157,6 @@ const MerchantsSimulatorView = ({
         <SimulatorOutputSection
           isLoading={isLoading}
           outputData={outputData}
-          ref={targetRef}
           isEmailImage={true}
         />
       </div>
