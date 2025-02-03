@@ -7,6 +7,7 @@ import {
   StyledInputLabel,
   StyledSlider,
   StyledSliderTextField,
+  StyledTooltip,
 } from './SimulatorInputsSection.styles';
 
 const formatSliderLabel = (value) => {
@@ -31,6 +32,12 @@ const CustomSlider = ({
   step = 1,
 }) => {
   const [displayValue, setDisplayValue] = useState('');
+  const [error, setError] = useState('');
+
+  const showError = (message) => {
+    setError(message);
+    setTimeout(() => setError(''), 3000);
+  };
 
   return (
     <Box
@@ -46,51 +53,52 @@ const CustomSlider = ({
           {({ field, form }) => {
             const handleBlur = () => {
               let parsedValue = displayValue;
-              let error = '';
+              let errorMsg = '';
 
               if (parsedValue < min) {
                 parsedValue = min;
-                error = `Value cannot be less than ${min}`;
+                errorMsg = `Value cannot be less than ${min.toLocaleString()}`;
               } else if (parsedValue > max) {
                 parsedValue = max;
-                error = `Value cannot be greater than ${max}`;
+                errorMsg = `Value cannot be greater than ${max.toLocaleString()}`;
               }
 
               form.setFieldValue(name, parsedValue);
 
-              if (error) {
-                form.setFieldError(name, error);
-                form.setFieldTouched(name, true)
-              } else {
-                form.setFieldError(name, '');
+              if (errorMsg) {
+                showError(errorMsg);
               }
+
               setDisplayValue(parsedValue);
 
               handleValuesChange();
             };
             return (
-              <StyledSliderTextField
-                value={displayValue || field.value}
-                onChange={(e) => {
-                  setDisplayValue(e.target.value);
-                }}
-                onBlur={handleBlur}
-                name={name}
-                error={form.errors[name]}
-                slotProps={{
-                  input: {
-                    inputProps: {
-                      prefix: prefix,
-                      suffix: suffix,
-                      min: min,
-                      max: max,
-                      maxLength: 10,
+              <Box>
+                {error && <StyledTooltip open={true} title={error} />}
+                <StyledSliderTextField
+                  value={displayValue || field.value}
+                  onChange={(e) => {
+                    setDisplayValue(e.target.value);
+                  }}
+                  onBlur={handleBlur}
+                  name={name}
+                  slotProps={{
+                    input: {
+                      inputProps: {
+                        prefix: prefix,
+                        suffix: suffix,
+                        min: min,
+                        max: max,
+                        maxLength: 10,
+                      },
+                      inputComponent: NumericFormatCustom,
                     },
-                    inputComponent: NumericFormatCustom,
-                  },
-                }}
-                variant='standard'
-              />
+                  }}
+                  variant='standard'
+                  error={!!error}
+                />
+              </Box>
             );
           }}
         </Field>
@@ -111,6 +119,7 @@ const CustomSlider = ({
             }}
             onChangeCommitted={(event, value) => {
               form.setFieldValue(name, value);
+              setDisplayValue(value);
               handleValuesChange();
             }}
             valueLabelDisplay='auto'

@@ -1,5 +1,5 @@
 import { FormikProvider, useFormik } from 'formik';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 import { toPng } from 'html-to-image';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
@@ -79,43 +79,40 @@ const MerchantsSimulatorView = ({
 
   const onIndustryChange = async (industryDisplayName) => {
     const inputsDefaults = getUIDefaultsForIndustry(industryDisplayName);
-    await setValues({
+    const defaultValues = {
       industry: industryDisplayName,
       aov: inputsDefaults.aov.value,
       avgDiscount: inputsDefaults.avgDiscount.value,
       cvr: inputsDefaults.cvr.value,
       monthlyTraffic: inputsDefaults.monthlyTraffic.value,
-    });
+    };
+    await setValues(defaultValues);
     setInputData(inputsDefaults);
+
+    handleValuesChange(defaultValues);
+  };
+
+  const handleValuesChange = (newValues = values) => {
+    setLoading(true);
+    debouncedValuesChange(newValues);
   };
 
   const debouncedValuesChange = useMemo(
     () =>
-      debounce(() => {
+      debounce((newValues) => {
         const UIOutputs = getUIOutputs(
-          Number(values.monthlyTraffic),
-          Number(values.avgDiscount) / 100,
-          Number(values.cvr) / 100,
-          Number(values.aov),
-          values.industry
+          Number(newValues.monthlyTraffic),
+          Number(newValues.avgDiscount) / 100,
+          Number(newValues.cvr) / 100,
+          Number(newValues.aov),
+          newValues.industry
         );
         setOutputData(UIOutputs);
         setLoading(false);
         !isDesktop && scrollToOutput();
       }, 600),
-    [setLoading, setOutputData, values, isDesktop]
+    [setLoading, setOutputData, isDesktop]
   );
-
-  const handleValuesChange = useCallback(() => {
-    setLoading(true);
-    debouncedValuesChange();
-  }, [debouncedValuesChange]);
-
-  useEffect(() => {
-    if (values.industry !== '') {
-      handleValuesChange();
-    }
-  }, [values.industry, handleValuesChange]);
 
   return (
     <Box>
