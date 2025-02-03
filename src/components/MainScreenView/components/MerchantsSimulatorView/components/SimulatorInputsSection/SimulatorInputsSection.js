@@ -27,7 +27,6 @@ const SimulatorInputsSection = ({
               value={field.value}
               onChange={(e) => {
                 onIndustryChange(e.target.value);
-                handleValuesChange();
               }}
               displayEmpty
               renderValue={(selected) =>

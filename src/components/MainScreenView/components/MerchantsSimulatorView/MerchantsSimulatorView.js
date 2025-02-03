@@ -1,5 +1,5 @@
 import { FormikProvider, useFormik } from 'formik';
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 import { toPng } from 'html-to-image';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
@@ -75,20 +75,18 @@ const MerchantsSimulatorView = ({
       setStep(steps.share);
     },
   });
-  const { values, setFieldValue, handleSubmit } = formik;
+  const { values, handleSubmit, setValues } = formik;
 
-  const onIndustryChange = (industry) => {
-    setFieldValue('industry', industry);
-    const inputsDefaults = getUIDefaultsForIndustry(industry);
-    setInputData(inputsDefaults);
-    Object.entries(inputsDefaults).map(([key, { value }]) => {
-      setFieldValue(key, value);
+  const onIndustryChange = async (industryDisplayName) => {
+    const inputsDefaults = getUIDefaultsForIndustry(industryDisplayName);
+    await setValues({
+      industry: industryDisplayName,
+      aov: inputsDefaults.aov.value,
+      avgDiscount: inputsDefaults.avgDiscount.value,
+      cvr: inputsDefaults.cvr.value,
+      monthlyTraffic: inputsDefaults.monthlyTraffic.value,
     });
-  };
-
-  const handleValuesChange = () => {
-    setLoading(true);
-    debouncedValuesChange();
+    setInputData(inputsDefaults);
   };
 
   const debouncedValuesChange = useMemo(
@@ -107,6 +105,17 @@ const MerchantsSimulatorView = ({
       }, 600),
     [setLoading, setOutputData, values, isDesktop]
   );
+
+  const handleValuesChange = useCallback(() => {
+    setLoading(true);
+    debouncedValuesChange();
+  }, [debouncedValuesChange]);
+
+  useEffect(() => {
+    if (values.industry !== '') {
+      handleValuesChange();
+    }
+  }, [values.industry, handleValuesChange]);
 
   return (
     <Box>

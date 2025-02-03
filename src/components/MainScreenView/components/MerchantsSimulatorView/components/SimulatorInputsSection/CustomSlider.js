@@ -20,17 +20,6 @@ const formatSliderLabel = (value) => {
   );
 };
 
-const stripAndParseValue = (value) => {
-  const prefix = '$';
-  const suffix = '%';
-
-  return Number(
-    value
-      .replace(new RegExp(`^${prefix}`), '')
-      .replace(new RegExp(`${suffix}$`), '')
-  );
-};
-
 const CustomSlider = ({
   name,
   label,
@@ -56,23 +45,38 @@ const CustomSlider = ({
         <Field name={name}>
           {({ field, form }) => {
             const handleBlur = () => {
-              let parsedValue = stripAndParseValue(displayValue);
+              let parsedValue = displayValue;
+              let error = '';
 
-              if (parsedValue < min) parsedValue = min;
-              if (parsedValue > max) parsedValue = max;
+              if (parsedValue < min) {
+                parsedValue = min;
+                error = `Value cannot be less than ${min}`;
+              } else if (parsedValue > max) {
+                parsedValue = max;
+                error = `Value cannot be greater than ${max}`;
+              }
 
               form.setFieldValue(name, parsedValue);
-              setDisplayValue(parsedValue.toString());
+
+              if (error) {
+                form.setFieldError(name, error);
+                form.setFieldTouched(name, true)
+              } else {
+                form.setFieldError(name, '');
+              }
+              setDisplayValue(parsedValue);
+
               handleValuesChange();
             };
             return (
               <StyledSliderTextField
-                value={field.value}
+                value={displayValue || field.value}
                 onChange={(e) => {
                   setDisplayValue(e.target.value);
                 }}
                 onBlur={handleBlur}
                 name={name}
+                error={form.errors[name]}
                 slotProps={{
                   input: {
                     inputProps: {
