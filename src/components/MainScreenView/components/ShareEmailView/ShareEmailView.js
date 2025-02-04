@@ -26,7 +26,7 @@ import { preparePayload } from './utils';
 
 const ShareEmailView = ({ setStep, emailData }) => {
   const [isLoading, setLoading] = useState(false);
-  const [isEmailSentSuccess, setEmailSentSuccess] = useState(true);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -47,12 +47,12 @@ const ShareEmailView = ({ setStep, emailData }) => {
         if (response.status === 200) {
           setStep(steps.thankYou);
         } else {
-          setEmailSentSuccess(false);
+          setShowErrorAlert(true);
           setLoading(false);
         }
       } catch (error) {
-        console.error(error);
-        setEmailSentSuccess(false);
+        console.error(error.message);
+        setShowErrorAlert(false);
         setLoading(false);
       }
     },
@@ -108,9 +108,9 @@ const ShareEmailView = ({ setStep, emailData }) => {
             </StyledFooterContainer>
           </StyledContentContainer>
           <Snackbar
-            open={!isEmailSentSuccess && !isLoading}
+            open={showErrorAlert && !isLoading}
             onClose={() => {
-              setEmailSentSuccess(true);
+              setShowErrorAlert(false);
             }}
             anchorOrigin={{
               vertical: 'bottom',
@@ -120,7 +120,7 @@ const ShareEmailView = ({ setStep, emailData }) => {
             <Alert
               severity='error'
               onClose={() => {
-                setEmailSentSuccess(true);
+                setShowErrorAlert(false);
               }}
               action={
                 <Button

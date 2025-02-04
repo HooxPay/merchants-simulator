@@ -88,7 +88,7 @@ export const processSimulatorImage = async (simulatorImage, fullName) => {
     if (!simulatorImage) return null;
 
     const today = new Date();
-    const formattedDate = format(today, 'dd-MM-yy');
+    const formattedDate = format(today, 'MM-dd-yy');
     const formattedName = fullName.replace(/\s/g, '');
     const uid = generateUID();
 

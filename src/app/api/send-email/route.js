@@ -50,9 +50,9 @@ export const POST = async (req) => {
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console.error('email sending failed', error);
+    console.error('email sending failed', error.message);
     return new Response(
-      JSON.stringify({ error: 'Failed to generate campaign' }),
+      JSON.stringify({ error: 'Failed to send email' }),
       {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
