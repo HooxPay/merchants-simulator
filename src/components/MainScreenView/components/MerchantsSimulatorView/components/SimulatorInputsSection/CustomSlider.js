@@ -31,7 +31,6 @@ const CustomSlider = ({
   suffix = '',
   step = 1,
 }) => {
-  const [displayValue, setDisplayValue] = useState('');
   const [error, setError] = useState('');
 
   const showError = (message) => {
@@ -51,8 +50,8 @@ const CustomSlider = ({
         <StyledInputLabel htmlFor={name}>{label || name}</StyledInputLabel>
         <Field name={name}>
           {({ field, form }) => {
-            const handleBlur = () => {
-              let parsedValue = displayValue;
+            const handleBlur = (value) => {
+              let parsedValue = Number(value.replace(/,/g, ''));
               let errorMsg = '';
 
               if (parsedValue < min) {
@@ -62,14 +61,11 @@ const CustomSlider = ({
                 parsedValue = max;
                 errorMsg = `Value cannot be greater than ${max.toLocaleString()}`;
               }
-
               form.setFieldValue(name, parsedValue);
 
               if (errorMsg) {
                 showError(errorMsg);
               }
-
-              setDisplayValue(parsedValue);
 
               handleValuesChange();
             };
@@ -77,11 +73,11 @@ const CustomSlider = ({
               <Box>
                 {error && <StyledTooltip open={true} title={error} />}
                 <StyledSliderTextField
-                  value={displayValue || field.value}
+                  value={field.value}
                   onChange={(e) => {
-                    setDisplayValue(e.target.value);
+                    form.setFieldValue(name, e.target.value);
                   }}
-                  onBlur={handleBlur}
+                  onBlur={(e) => handleBlur(e.target.value)}
                   name={name}
                   slotProps={{
                     input: {
@@ -119,7 +115,6 @@ const CustomSlider = ({
             }}
             onChangeCommitted={(event, value) => {
               form.setFieldValue(name, value);
-              setDisplayValue(value);
               handleValuesChange();
             }}
             valueLabelDisplay='auto'

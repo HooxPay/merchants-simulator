@@ -59,10 +59,10 @@ const MerchantsSimulatorView = ({
   const formik = useFormik({
     initialValues: {
       industry: '',
-      monthlyTraffic: 0,
-      avgDiscount: 0,
-      cvr: 0,
-      aov: 0,
+      monthlyTraffic: inputInitialValues.monthlyTraffic.min,
+      avgDiscount: inputInitialValues.avgDiscount.min,
+      cvr: inputInitialValues.cvr.min,
+      aov: inputInitialValues.aov.min,
     },
     onSubmit: async (values) => {
       const outputImage = await generateOutputImage();
