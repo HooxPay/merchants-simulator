@@ -51,7 +51,7 @@ const CustomSlider = ({
         <Field name={name}>
           {({ field, form }) => {
             const handleBlur = (value) => {
-              let parsedValue = Number(value.replace(/,/g, ''));
+              let parsedValue = Number(value.replace(/[^0-9.]/g, ''));
               let errorMsg = '';
 
               if (parsedValue < min) {
