@@ -105,7 +105,7 @@ export const processSimulatorImage = async (simulatorImage, fullName) => {
       simulatorImage.type
     );
 
-    console.log('Banner upload successful:', bannerUploadResult);
+    console.log('Simulator image upload successful:', bannerUploadResult);
     return bannerUploadResult;
   } catch (error) {
     console.error(error);
