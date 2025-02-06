@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Field } from 'formik';
 import { NumericFormat } from 'react-number-format';
 
@@ -7,6 +7,7 @@ import {
   StyledInputLabel,
   StyledSlider,
   StyledSliderTextField,
+  StyledTooltip,
 } from './SimulatorInputsSection.styles';
 
 const formatSliderLabel = (value) => {
@@ -30,6 +31,13 @@ const CustomSlider = ({
   suffix = '',
   step = 1,
 }) => {
+  const [error, setError] = useState('');
+
+  const showError = (message) => {
+    setError(message);
+    setTimeout(() => setError(''), 3000);
+  };
+
   return (
     <Box
       display='flex'
@@ -41,28 +49,54 @@ const CustomSlider = ({
       <Box display='flex' justifyContent='space-between' alignItems='center'>
         <StyledInputLabel htmlFor={name}>{label || name}</StyledInputLabel>
         <Field name={name}>
-          {({ field, form }) => (
-            <StyledSliderTextField
-              value={field.value}
-              onChange={(e) => {
-                form.setFieldValue(name, e.target.value || min);
-                //  handleValuesChange();
-              }}
-              name={name}
-              slotProps={{
-                input: {
-                  inputProps: {
-                    prefix: prefix,
-                    suffix: suffix,
-                    min: min,
-                    max: max,
-                  },
-                  inputComponent: NumericFormatCustom,
-                },
-              }}
-              variant='standard'
-            />
-          )}
+          {({ field, form }) => {
+            const handleBlur = (value) => {
+              let parsedValue = Number(value.replace(/[^0-9.]/g, ''));
+              let errorMsg = '';
+
+              if (parsedValue < min) {
+                parsedValue = min;
+                errorMsg = `Value cannot be less than ${min.toLocaleString()}`;
+              } else if (parsedValue > max) {
+                parsedValue = max;
+                errorMsg = `Value cannot be greater than ${max.toLocaleString()}`;
+              }
+              form.setFieldValue(name, parsedValue);
+
+              if (errorMsg) {
+                showError(errorMsg);
+              }
+
+              handleValuesChange();
+            };
+            return (
+              <Box>
+                {error && <StyledTooltip open={true} title={error} />}
+                <StyledSliderTextField
+                  value={field.value}
+                  onChange={(e) => {
+                    form.setFieldValue(name, e.target.value);
+                  }}
+                  onBlur={(e) => handleBlur(e.target.value)}
+                  name={name}
+                  slotProps={{
+                    input: {
+                      inputProps: {
+                        prefix: prefix,
+                        suffix: suffix,
+                        min: min,
+                        max: max,
+                        maxLength: 10,
+                      },
+                      inputComponent: NumericFormatCustom,
+                    },
+                  }}
+                  variant='standard'
+                  error={!!error}
+                />
+              </Box>
+            );
+          }}
         </Field>
       </Box>
 
@@ -95,17 +129,17 @@ const NumericFormatCustom = React.forwardRef(function NumericFormatCustom(
   props,
   ref
 ) {
-  const { onChange, min, max, ...other } = props;
+  const { onChange, ...other } = props;
   return (
     <NumericFormat
       {...other}
       getInputRef={ref}
-      isAllowed={({ floatValue }) => {
-        if (floatValue == null) return true;
-        const minCondition = min != null ? floatValue >= min : true;
-        const maxCondition = max != null ? floatValue <= max : true;
-        return minCondition && maxCondition;
-      }}
+      // isAllowed={({ floatValue }) => {
+      //   if (floatValue == null) return true;
+      //   const minCondition = min != null ? floatValue >= min : true;
+      //   const maxCondition = max != null ? floatValue <= max : true;
+      //   return minCondition && maxCondition;
+      // }}
       allowNegative={false}
       allowLeadingZeros={false}
       onValueChange={(values) => {

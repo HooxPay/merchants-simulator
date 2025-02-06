@@ -22,10 +22,11 @@ import {
 } from '@mui/material';
 import { steps } from '../../MainScreenView';
 import CustomField from './CustomField';
+import { preparePayload } from './utils';
 
 const ShareEmailView = ({ setStep, emailData }) => {
   const [isLoading, setLoading] = useState(false);
-  const [isEmailSentSuccess, setEmailSentSuccess] = useState(true);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -38,22 +39,20 @@ const ShareEmailView = ({ setStep, emailData }) => {
     onSubmit: async (values) => {
       try {
         setLoading(true);
+        const payload = preparePayload(values, emailData);
         const response = await fetch('/api/send-email', {
           method: 'POST',
-          body: JSON.stringify({
-            emailData: emailData,
-            personalIdentifiers: { fullName: values.name, email: values.email },
-          }),
+          body: payload,
         });
         if (response.status === 200) {
           setStep(steps.thankYou);
         } else {
-          setEmailSentSuccess(false);
+          setShowErrorAlert(true);
           setLoading(false);
         }
       } catch (error) {
-        console.error(error);
-        setEmailSentSuccess(false);
+        console.error(error.message);
+        setShowErrorAlert(false);
         setLoading(false);
       }
     },
@@ -109,9 +108,9 @@ const ShareEmailView = ({ setStep, emailData }) => {
             </StyledFooterContainer>
           </StyledContentContainer>
           <Snackbar
-            open={!isEmailSentSuccess}
+            open={showErrorAlert && !isLoading}
             onClose={() => {
-              setEmailSentSuccess(true);
+              setShowErrorAlert(false);
             }}
             anchorOrigin={{
               vertical: 'bottom',
@@ -121,7 +120,7 @@ const ShareEmailView = ({ setStep, emailData }) => {
             <Alert
               severity='error'
               onClose={() => {
-                setEmailSentSuccess(true);
+                setShowErrorAlert(false);
               }}
               action={
                 <Button

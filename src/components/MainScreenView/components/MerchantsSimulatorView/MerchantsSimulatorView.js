@@ -59,15 +59,15 @@ const MerchantsSimulatorView = ({
   const formik = useFormik({
     initialValues: {
       industry: '',
-      monthlyTraffic: 0,
-      avgDiscount: 0,
-      cvr: 0,
-      aov: 0,
+      monthlyTraffic: inputInitialValues.monthlyTraffic.min,
+      avgDiscount: inputInitialValues.avgDiscount.min,
+      cvr: inputInitialValues.cvr.min,
+      aov: inputInitialValues.aov.min,
     },
     onSubmit: async (values) => {
       const outputImage = await generateOutputImage();
       setEmailData({
-        outputImage,
+        outputImage: outputImage,
         monthlyTraffic: values.monthlyTraffic,
         incentivesBudget: outputData.estimatedAnnualBudget,
         monthlySalesIncrease: outputData.salesUplift,
@@ -75,37 +75,43 @@ const MerchantsSimulatorView = ({
       setStep(steps.share);
     },
   });
-  const { values, setFieldValue, handleSubmit } = formik;
+  const { values, handleSubmit, setValues } = formik;
 
-  const onIndustryChange = (industry) => {
-    setFieldValue('industry', industry);
-    const inputsDefaults = getUIDefaultsForIndustry(industry);
+  const onIndustryChange = async (industryDisplayName) => {
+    const inputsDefaults = getUIDefaultsForIndustry(industryDisplayName);
+    const defaultValues = {
+      industry: industryDisplayName,
+      aov: inputsDefaults.aov.value,
+      avgDiscount: inputsDefaults.avgDiscount.value,
+      cvr: inputsDefaults.cvr.value,
+      monthlyTraffic: inputsDefaults.monthlyTraffic.value,
+    };
+    await setValues(defaultValues);
     setInputData(inputsDefaults);
-    Object.entries(inputsDefaults).map(([key, { value }]) => {
-      setFieldValue(key, value);
-    });
+
+    handleValuesChange(defaultValues);
   };
 
-  const handleValuesChange = () => {
+  const handleValuesChange = (newValues = values) => {
     setLoading(true);
-    debouncedValuesChange();
+    debouncedValuesChange(newValues);
   };
 
   const debouncedValuesChange = useMemo(
     () =>
-      debounce(() => {
+      debounce((newValues) => {
         const UIOutputs = getUIOutputs(
-          Number(values.monthlyTraffic),
-          Number(values.avgDiscount) / 100,
-          Number(values.cvr) / 100,
-          Number(values.aov),
-          values.industry
+          Number(newValues.monthlyTraffic),
+          Number(newValues.avgDiscount) / 100,
+          Number(newValues.cvr) / 100,
+          Number(newValues.aov),
+          newValues.industry
         );
         setOutputData(UIOutputs);
         setLoading(false);
         !isDesktop && scrollToOutput();
       }, 600),
-    [setLoading, setOutputData, values, isDesktop]
+    [setLoading, setOutputData, isDesktop]
   );
 
   return (
@@ -157,7 +163,6 @@ const MerchantsSimulatorView = ({
         <SimulatorOutputSection
           isLoading={isLoading}
           outputData={outputData}
-          ref={targetRef}
           isEmailImage={true}
         />
       </div>

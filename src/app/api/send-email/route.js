@@ -1,15 +1,36 @@
-import { sendEmail } from './handlers';
+import { processSimulatorImage, sendEmail } from './handlers';
 
 export const POST = async (req) => {
   try {
-    const { emailData, personalIdentifiers } = await req.json();
+    const data = await req.formData();
+    const email = data.get('email');
+    const fullName = data.get('fullName');
+    const monthlyTraffic = data.get('monthlyTraffic');
+    const incentivesBudget = data.get('incentivesBudget');
+    const monthlySalesIncrease = data.get('monthlySalesIncrease');
+    const outputImage = data.get('outputImage');
+
+    const simulatorImageUrl = await processSimulatorImage(
+      outputImage,
+      fullName
+    );
+    if (!simulatorImageUrl) {
+      return new Response(
+        JSON.stringify({ error: 'failed to upload image to s3' }),
+        {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
     const emailBody = {
-      email: personalIdentifiers.email,
-      fullName: personalIdentifiers.fullName,
-      monthlyTraffic: emailData.monthlyTraffic,
-      incentivesBudget: emailData.incentivesBudget,
-      monthlySalesIncrease: emailData.monthlySalesIncrease,
-      simulatorImage: emailData.simulatorImage,
+      email,
+      fullName,
+      monthlyTraffic,
+      incentivesBudget,
+      monthlySalesIncrease,
+      simulatorImageUrl,
     };
     const emailResponse = await sendEmail(emailBody);
     if (!emailResponse) {
@@ -29,9 +50,9 @@ export const POST = async (req) => {
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console.error('email sending failed', error);
+    console.error('email sending failed', error.message);
     return new Response(
-      JSON.stringify({ error: 'Failed to generate campaign' }),
+      JSON.stringify({ error: 'Failed to send email' }),
       {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
