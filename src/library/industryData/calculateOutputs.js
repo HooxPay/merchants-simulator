@@ -50,8 +50,9 @@ const computeSalesUplift = (
     (1 + coversionUplift / 100) *
     (1 + aovUplift / 100);
 
-  const salesUplift = salesInHooxTransactions - originalSalesInHooxTransactions;
-  return formatCurrency(salesUplift);
+  const salesUplift =
+    (salesInHooxTransactions - originalSalesInHooxTransactions) * 12;
+  return salesUplift;
 };
 
 const computeEstimatedAnnualBudget = (
@@ -60,11 +61,7 @@ const computeEstimatedAnnualBudget = (
   avgHooxIncentive
 ) => {
   const numberOfOffers = computeNumberOfOffers(monthlyTrafficInput, cvrInput);
-  return numberOfOffers * avgHooxIncentive * 12;
-};
-
-const computeEstimatedAnnualBudgetPerMonth = (estimatedAnnualBudget) => {
-  return formatCurrency(estimatedAnnualBudget / 12);
+  return numberOfOffers * avgHooxIncentive;
 };
 
 export const caclulateUIOutputs = (
@@ -85,10 +82,9 @@ export const caclulateUIOutputs = (
     hooxIncentiveInIndustry
   );
 
-  const formattedEstimatedAnnualBudget = formatCurrency(estimatedAnnualBudget);
-  const estimatedAnnualBudgetPerMonth = computeEstimatedAnnualBudgetPerMonth(
-    estimatedAnnualBudget
-  );
+  const sponseredByIssuers =
+    estimatedAnnualBudget * hooxConstants.hooxConversion;
+  const formattedSponseredByIssuers = formatCurrency(sponseredByIssuers);
 
   const conversionUplift = computeConversionUplift(
     cvrInput,
@@ -102,7 +98,7 @@ export const caclulateUIOutputs = (
     hooxConversionUplift
   );
 
-  const salesUplift = computeSalesUplift(
+  const annualSalesUplift = computeSalesUplift(
     cvrInput,
     cvrIndustry,
     hooxConversionUplift,
@@ -111,11 +107,14 @@ export const caclulateUIOutputs = (
     aovIndustry,
     avgDiscountInput
   );
+
+  const formattedSalesUplift = formatCurrency(annualSalesUplift);
+  const formattedSalesUpliftPerMonth = formatCurrency(annualSalesUplift / 12);
   return {
-    estimatedAnnualBudget: formattedEstimatedAnnualBudget, //Formatted currency
-    estimatedAnnualBudgetPerMonth, //Formatted currency
+    estimatedAnnualSalesUplift: formattedSalesUplift, //Changed From estimatedAnnualBudget
+    estimatedAnnualSalesUpliftPerMonth: formattedSalesUpliftPerMonth, //Formatted currency
     conversionUplift: `+${conversionUplift.toFixed(1)}%`,
     aovUplift: `+${aovUplift.toFixed(1)}%`,
-    salesUplift,
+    sponseredByIssuer: formattedSponseredByIssuers, //Changed from salesUplift
   };
 };

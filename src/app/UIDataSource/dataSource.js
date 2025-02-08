@@ -58,13 +58,14 @@ export const getUIDefaultsForIndustry = (industryDisplayName) => {
  * @param {Number || Null} industryDisplayName
  * @returns {Object} The computed UI outputs formatted as strings
  * @example
- * {
- *   estimatedAnnualBudget,         //$297,321
- *   estimatedAnnualBudgetPerMonth, //$24,777
- *   conversionUplift,              //+65%
- *   aovUplift,                     //+1.5%
- *   salesUplift,                   //+65%
- * }
+ *
+ *  {
+ *   estimatedAnnualSalesUplift:          $247,123
+ *   estimatedAnnualSalesUpliftPerMonth:  $20,593
+ *   conversionUplift:                    +1.2%
+ *   aovUplift:                           +1.5%
+ *   sponseredByIssuer:                   $12,345
+ *  }
  */
 
 export const getUIOutputs = (
