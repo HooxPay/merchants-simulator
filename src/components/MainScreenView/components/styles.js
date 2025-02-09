@@ -5,7 +5,7 @@ export const useStyles = () => {
   return {
     container: {
       maxWidth: 700,
-      padding: '2.5rem',
+      padding: ['2rem', '2.5rem'],
       boxShadow: [0, theme.shadows[3]],
       borderRadius: [0, theme.shape.borderRadius],
       backgroundImage: 'url(/splashscreen.png)',
@@ -14,30 +14,30 @@ export const useStyles = () => {
       backgroundSize: 'contain',
     },
     title: {
-      fontSize: '2.5rem',
+      fontSize: ['1.75rem', '2.5rem'],
       fontWeight: 500,
-      lineHeight: '52px',
-      paddingBottom: '1rem',
+      lineHeight: ['35px', '52px'],
+      paddingBottom: ['0.5rem', '1rem'],
       textAlign: 'center',
     },
     subtitle: {
       display: 'inline',
-      fontSize: '1.25rem',
+      fontSize: ['1.125rem', '1.25rem'],
       fontWeight: 400,
-      lineHeight: '30px',
+      lineHeight: ['25px', '30px'],
     },
     subtitle2: {
       display: 'inline',
-      fontSize: '1.25rem',
+      fontSize: ['1.125rem', '1.25rem'],
       fontWeight: 400,
-      lineHeight: '30px',
+      lineHeight: ['25px', '30px'],
     },
     embedded: {
       display: 'inline',
-      fontSize: '1.25rem',
+      fontSize: ['1.125rem', '1.25rem'],
       fontWeight: 700,
       color: theme.shadesOfPurple.dark,
-      lineHeight: '30px',
+      lineHeight: ['25px', '30px'],
     },
     footer: {
       paddingTop: '180px',
