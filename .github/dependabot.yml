@@ -1,0 +1,11 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/' # Location of package manifests
+    schedule:
+      interval: 'daily' # Check for updates daily
+    target-branch: 'dev' # Target the development branch for PRs
+    commit-message:
+      prefix: 'deps'
+    open-pull-requests-limit: 5
+    rebase-strategy: 'auto'
