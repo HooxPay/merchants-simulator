@@ -7,7 +7,7 @@ export const POST = async (req) => {
     const fullName = data.get('fullName');
     const monthlyTraffic = data.get('monthlyTraffic');
     const incentivesBudget = data.get('incentivesBudget');
-    const monthlySalesIncrease = data.get('monthlySalesIncrease');
+    const annualSalesIncrease = data.get('annualSalesIncrease');
     const outputImage = data.get('outputImage');
 
     const simulatorImageUrl = await processSimulatorImage(
@@ -29,7 +29,7 @@ export const POST = async (req) => {
       fullName,
       monthlyTraffic,
       incentivesBudget,
-      monthlySalesIncrease,
+      annualSalesIncrease,
       simulatorImageUrl,
     };
     const emailResponse = await sendEmail(emailBody);

@@ -29,7 +29,7 @@ export const sendEmail = async (body) => {
     fullName,
     monthlyTraffic,
     incentivesBudget,
-    monthlySalesIncrease,
+    annualSalesIncrease,
     simulatorImageUrl,
   } = body;
   const params = {
@@ -40,7 +40,7 @@ export const sendEmail = async (body) => {
           fullName,
           monthlyTraffic,
           incentivesBudget,
-          monthlySalesIncrease,
+          annualSalesIncrease,
           simulatorImageUrl,
           merchantsDocsUrl,
         }),

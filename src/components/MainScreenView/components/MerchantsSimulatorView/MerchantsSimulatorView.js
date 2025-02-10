@@ -67,8 +67,8 @@ const MerchantsSimulatorView = ({
       setEmailData({
         outputImage: outputImage,
         monthlyTraffic: values.monthlyTraffic,
-        incentivesBudget: outputData.estimatedAnnualBudget,
-        monthlySalesIncrease: outputData.salesUplift,
+        incentivesBudget: outputData.sponseredByIssuer,
+        annualSalesIncrease: outputData.estimatedAnnualSalesUplift,
       });
       setStep(steps.share);
     },
