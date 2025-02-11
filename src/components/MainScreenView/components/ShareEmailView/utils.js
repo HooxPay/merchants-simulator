@@ -5,7 +5,7 @@ export const preparePayload = (values, emailData) => {
   formData.append('fullName', values.name);
   formData.append('monthlyTraffic', emailData.monthlyTraffic);
   formData.append('incentivesBudget', emailData.incentivesBudget);
-  formData.append('monthlySalesIncrease', emailData.monthlySalesIncrease);
+  formData.append('annualSalesIncrease', emailData.annualSalesIncrease);
   formData.append('outputImage', emailData.outputImage);
 
   return formData;

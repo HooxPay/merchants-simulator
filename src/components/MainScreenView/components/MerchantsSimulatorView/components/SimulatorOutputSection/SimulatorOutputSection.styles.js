@@ -1,16 +1,12 @@
 import styled from '@emotion/styled';
 import { Box, Skeleton, Typography } from '@mui/material';
 
-export const StyledContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'isEmailImage',
-})(({ theme, isEmailImage }) => ({
-  margin: isEmailImage ? 0 : '4.25rem 0 1.5rem 2.5rem',
-  maxWidth: 540,
-  maxHeight: 360,
+export const StyledContainer = styled(Box)(({ theme }) => ({
+  maxWidth: 500,
+  maxHeight: 320,
   backgroundColor: '#F6F2FF',
   borderRadius: '0.5rem',
   [theme.breakpoints.down('md')]: {
-    margin: 0,
     maxWidth: 400,
     maxHeight: 1000,
   },

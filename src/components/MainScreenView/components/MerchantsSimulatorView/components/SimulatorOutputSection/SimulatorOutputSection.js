@@ -16,7 +16,7 @@ import {
 } from './SimulatorOutputSection.styles';
 
 const SimulatorOutputSection = forwardRef(
-  ({ isLoading, outputData, isEmailImage = false }, ref) => {
+  ({ isLoading, outputData}, ref) => {
     const renderUplift = (name, value) => {
       return (
         <StyledUpliftContentContainer>
@@ -24,7 +24,7 @@ const SimulatorOutputSection = forwardRef(
           {isLoading ? (
             <StyledUpliftSkeleton
               variant='rectangular'
-              width={85}
+              width={70}
               height={20}
             />
           ) : (
@@ -34,9 +34,9 @@ const SimulatorOutputSection = forwardRef(
       );
     };
     return (
-      <StyledContainer ref={ref} isEmailImage={isEmailImage}>
+      <StyledContainer ref={ref}>
         <StyledTitle>
-          Estimated annual budget we will deploy from card issuers:
+          Estimated annual Sales Uplift:
         </StyledTitle>
         <StyledBudgetSummaryContainer>
           {isLoading ? (
@@ -47,7 +47,7 @@ const SimulatorOutputSection = forwardRef(
             />
           ) : (
             <StyledBudgetTotal>
-              {outputData?.estimatedAnnualBudget || 0}
+              {outputData?.estimatedAnnualSalesUplift || 0}
             </StyledBudgetTotal>
           )}
           {isLoading ? (
@@ -58,14 +58,14 @@ const SimulatorOutputSection = forwardRef(
             />
           ) : (
             <StyledBudgetMonthly>
-              {outputData?.estimatedAnnualBudgetPerMonth || 0}/month
+              {outputData?.estimatedAnnualSalesUpliftPerMonth || 0}/month
             </StyledBudgetMonthly>
           )}
         </StyledBudgetSummaryContainer>
         <StyledUpliftContainer>
           {renderUplift('Conversion uplift', outputData?.conversionUplift || 0)}
           {renderUplift('AOV uplift', outputData?.aovUplift || 0)}
-          {renderUplift('Sales uplift', outputData?.salesUplift || 0)}
+          {renderUplift('Sponsored by issuers', outputData?.sponseredByIssuer || 0)}
         </StyledUpliftContainer>
       </StyledContainer>
     );

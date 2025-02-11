@@ -31,7 +31,6 @@ const MerchantsSimulatorView = ({
   const [inputData, setInputData] = useState(inputInitialValues);
   const [outputData, setOutputData] = useState({});
   const targetRef = useRef(null);
-  const outputRef = useRef(null);
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -40,10 +39,9 @@ const MerchantsSimulatorView = ({
   };
 
   const generateOutputImage = async () => {
-    if (outputRef.current) {
+    if (targetRef.current) {
       try {
-        outputRef.current.style.zIndex = -1;
-        const dataUrl = await toPng(outputRef.current);
+        const dataUrl = await toPng(targetRef.current);
         const blob = await fetch(dataUrl).then((res) => res.blob());
         const file = new File([blob], 'output-image.png', {
           type: 'image/png',
@@ -69,8 +67,8 @@ const MerchantsSimulatorView = ({
       setEmailData({
         outputImage: outputImage,
         monthlyTraffic: values.monthlyTraffic,
-        incentivesBudget: outputData.estimatedAnnualBudget,
-        monthlySalesIncrease: outputData.salesUplift,
+        incentivesBudget: outputData.sponseredByIssuer,
+        annualSalesIncrease: outputData.estimatedAnnualSalesUplift,
       });
       setStep(steps.share);
     },
@@ -133,11 +131,13 @@ const MerchantsSimulatorView = ({
                   handleValuesChange={handleValuesChange}
                 />
                 <Stack>
-                  <SimulatorOutputSection
-                    isLoading={isLoading}
-                    outputData={outputData}
-                    ref={targetRef}
-                  />
+                  <Box sx={{ margin: [0, '4.25rem 0 1.5rem 2.5rem'] }}>
+                    <SimulatorOutputSection
+                      isLoading={isLoading}
+                      outputData={outputData}
+                      ref={targetRef}
+                    />
+                  </Box>
                   <StyledButton
                     variant='contained'
                     onClick={handleSubmit}
@@ -151,21 +151,6 @@ const MerchantsSimulatorView = ({
           </form>
         </FormikProvider>
       </StyledContainer>
-      {/* Invisible output rendering in order to generate an image */}
-      <div
-        ref={outputRef}
-        style={{
-          position: 'absolute',
-          top: 0,
-          zIndex: -10000,
-        }}
-      >
-        <SimulatorOutputSection
-          isLoading={isLoading}
-          outputData={outputData}
-          isEmailImage={true}
-        />
-      </div>
     </Box>
   );
 };

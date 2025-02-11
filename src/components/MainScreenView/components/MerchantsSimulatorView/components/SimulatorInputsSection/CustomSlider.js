@@ -44,7 +44,6 @@ const CustomSlider = ({
       flexDirection='column'
       mb={2}
       key={`${name}-sliderContainer`}
-      sx={{ maxHeight: 88, height: '100%' }}
     >
       <Box display='flex' justifyContent='space-between' alignItems='center'>
         <StyledInputLabel htmlFor={name}>{label || name}</StyledInputLabel>

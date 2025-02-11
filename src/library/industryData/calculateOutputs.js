@@ -6,10 +6,10 @@ import { getIndustryByDisplayName } from './dataUtils.js';
 const computeConversionUplift = (
   cvrInput,
   cvrIndustry,
-  conversionUpliftIndustry
+  hooxConversionUpliftIndustry
 ) => {
   const converisonUplift =
-    (cvrInput / cvrIndustry) * conversionUpliftIndustry * 100;
+    (cvrInput / cvrIndustry) * hooxConversionUpliftIndustry * 100;
   return converisonUplift;
 };
 
@@ -81,7 +81,7 @@ export const caclulateUIOutputs = (
     cvrInput,
     hooxIncentiveInIndustry
   );
-
+  const aovUpliftByIndustry = industryData.aovUplift;
   const sponseredByIssuers =
     estimatedAnnualBudget * hooxConstants.hooxConversion;
   const formattedSponseredByIssuers = formatCurrency(sponseredByIssuers);
@@ -95,7 +95,7 @@ export const caclulateUIOutputs = (
   const aovUplift = computeAOVUplift(
     avgOrderInput,
     aovIndustry,
-    hooxConversionUplift
+    aovUpliftByIndustry
   );
 
   const annualSalesUplift = computeSalesUplift(

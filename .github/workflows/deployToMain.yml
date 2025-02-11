@@ -1,0 +1,32 @@
+name: Push to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_ISSUERS_S3_DOMAIN: 'hoox-issuers-bucket.s3.amazonaws.com'
+      AWS_ISSUERS_US_S3_DOMAIN: 'hoox-issuers-bucket.s3.us-east-1.amazonaws.com'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18.17.0'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
