@@ -22,7 +22,7 @@ const s3 = new S3Client({
 
 const merchantsDocsUrl = 'https://hoox.gitbook.io/merchants-api';
 
-export const sendEmail = async (body) => {
+export const sendEmailToClient = async (body) => {
   //Template Params Object
   const {
     email,
@@ -61,6 +61,44 @@ export const sendEmail = async (body) => {
   } catch (error) {
     console.error(error);
     return false;
+  }
+};
+
+export const sendEmailToAdmin = async (body) => {
+  //Template Params Object
+  const {
+    fullName,
+    monthlyTraffic,
+    incentivesBudget,
+    annualSalesIncrease,
+    simulatorImageUrl,
+  } = body;
+  const params = {
+    Content: {
+      Template: {
+        TemplateName: 'merchant-simulator-new-user-dispatch', // The name of the template in SES
+        TemplateData: JSON.stringify({
+          fullName,
+          monthlyTraffic,
+          incentivesBudget,
+          annualSalesIncrease,
+          simulatorImageUrl,
+        }),
+      },
+    },
+    Destination: {
+      ToAddresses: ['info@hooxpay.com'], // Recipient email address
+    },
+    FromEmailAddress: 'info@hooxpay.com', // Sender email address
+  };
+
+  // Send e-mail using ses v2 client
+  try {
+    const command = new SendEmailCommand(params);
+    const emailResponse = await ses.send(command);
+    console.log('Email sent successfully:', emailResponse);
+  } catch (error) {
+    console.error(error);
   }
 };
 

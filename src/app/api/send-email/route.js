@@ -1,4 +1,8 @@
-import { processSimulatorImage, sendEmail } from './handlers';
+import {
+  processSimulatorImage,
+  sendEmailToAdmin,
+  sendEmailToClient,
+} from './handlers';
 
 export const POST = async (req) => {
   try {
@@ -32,7 +36,7 @@ export const POST = async (req) => {
       annualSalesIncrease,
       simulatorImageUrl,
     };
-    const emailResponse = await sendEmail(emailBody);
+    const emailResponse = await sendEmailToClient(emailBody);
     if (!emailResponse) {
       return new Response(
         JSON.stringify({ error: 'ses failed to send email' }),
@@ -43,6 +47,8 @@ export const POST = async (req) => {
       );
     }
 
+    await sendEmailToAdmin(emailBody);
+
     return new Response(
       JSON.stringify({
         message: 'email sent successfully',
@@ -51,12 +57,9 @@ export const POST = async (req) => {
     );
   } catch (error) {
     console.error('email sending failed', error.message);
-    return new Response(
-      JSON.stringify({ error: 'Failed to send email' }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    return new Response(JSON.stringify({ error: 'Failed to send email' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 };
