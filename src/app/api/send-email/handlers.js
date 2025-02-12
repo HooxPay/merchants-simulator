@@ -67,6 +67,7 @@ export const sendEmailToClient = async (body) => {
 export const sendEmailToAdmin = async (body) => {
   //Template Params Object
   const {
+    email,
     fullName,
     monthlyTraffic,
     incentivesBudget,
@@ -83,6 +84,7 @@ export const sendEmailToAdmin = async (body) => {
           incentivesBudget,
           annualSalesIncrease,
           simulatorImageUrl,
+          userEmailAddress: email,
         }),
       },
     },
