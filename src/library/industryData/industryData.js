@@ -108,7 +108,7 @@ export const industriesDataObject = {
     avgDiscountMin: 0.013,
     avgDiscountMax: 0.313,
     hooxDiscount: 10,
-    hooxConversionUplift: 0.65,
+    hooxConversionUplift: 0.065,
     aovUplift: 0.015,
     monthlyTraffic: 500000,
     monthlyTrafficMin: 100000,
