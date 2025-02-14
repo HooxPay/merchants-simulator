@@ -14,11 +14,11 @@ export const POST = async (req) => {
     const annualSalesIncrease = data.get('annualSalesIncrease');
     const outputImage = data.get('outputImage');
 
-    const isSendOutput = process.env.SEND_OUTPUT_EMAIL === 'YES';
-    const isSendNewUser = process.env.SEND_NEW_USER_EMAIL === 'YES';
+    const shouldSendToUser = process.env.SEND_OUTPUT_EMAIL === 'YES';
+    const shouldSendToAdmins = process.env.SEND_NEW_USER_EMAIL === 'YES';
 
     // if no emails to send, return
-    if (!isSendOutput && !isSendNewUser) {
+    if (!shouldSendToUser && !shouldSendToAdmins) {
       return new Response(JSON.stringify({ message: 'No emails to send' }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
@@ -49,21 +49,23 @@ export const POST = async (req) => {
     };
 
     // send email to client
-    if (isSendOutput) {
-      const emailResponse = await sendEmailToClient(emailBody);
-      if (!emailResponse) {
-        return new Response(
-          JSON.stringify({ error: 'ses failed to send email' }),
-          {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
-      }
+    let emailResponse = false;
+    if (shouldSendToUser) {
+      emailResponse = await sendEmailToClient(emailBody);
     }
 
     // send email to admin
-    isSendNewUser && (await sendEmailToAdmin(emailBody));
+    shouldSendToAdmins && (await sendEmailToAdmin(emailBody));
+
+    if (!emailResponse) {
+      return new Response(
+        JSON.stringify({ error: 'ses failed to send email' }),
+        {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+    }
 
     // return success when done
     return new Response(
