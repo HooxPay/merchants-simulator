@@ -64,10 +64,19 @@ const MerchantsSimulatorView = ({
     },
     onSubmit: async (values) => {
       const outputImage = await generateOutputImage();
+
+      // parse sponsored by issuer value and multiply by 12 and format again
+      const incentivesBudget = `$${(
+        Number(outputData.sponseredByIssuer.replace(/[^0-9.]/g, '')) * 12
+      ).toLocaleString()}`;
+
+      // parse and then format monthly traffic
+      const monthlyTraffic = Number(values.monthlyTraffic).toLocaleString();
+
       setEmailData({
-        outputImage: outputImage,
-        monthlyTraffic: values.monthlyTraffic,
-        incentivesBudget: outputData.sponseredByIssuer,
+        outputImage,
+        monthlyTraffic,
+        incentivesBudget,
         annualSalesIncrease: outputData.estimatedAnnualSalesUplift,
       });
       setStep(steps.share);
