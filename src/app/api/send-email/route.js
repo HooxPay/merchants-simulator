@@ -49,7 +49,7 @@ export const POST = async (req) => {
     };
 
     // send email to client
-    let emailResponse = false;
+    let emailResponse = true;
     if (shouldSendToUser) {
       emailResponse = await sendEmailToClient(emailBody);
     }
