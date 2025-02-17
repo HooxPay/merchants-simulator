@@ -83,7 +83,7 @@ export const caclulateUIOutputs = (
   );
   const aovUpliftByIndustry = industryData.aovUplift;
   const sponseredByIssuers =
-    estimatedAnnualBudget * hooxConstants.hooxConversion;
+    estimatedAnnualBudget * hooxConstants.hooxConversion * 12;
   const formattedSponseredByIssuers = formatCurrency(sponseredByIssuers);
 
   const conversionUplift = computeConversionUplift(

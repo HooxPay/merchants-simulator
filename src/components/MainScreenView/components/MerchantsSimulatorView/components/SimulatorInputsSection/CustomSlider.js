@@ -66,16 +66,14 @@ const CustomSlider = ({
                 showError(errorMsg);
               }
 
-              handleValuesChange();
+              handleValuesChange({ ...form.values, [name]: parsedValue });
             };
             return (
               <Box>
                 {error && <StyledTooltip open={true} title={error} />}
                 <StyledSliderTextField
                   value={field.value}
-                  onChange={(e) => {
-                    form.setFieldValue(name, e.target.value);
-                  }}
+                  onChange={(e) => form.setFieldValue(name, e.target.value)}
                   onBlur={(e) => handleBlur(e.target.value)}
                   name={name}
                   slotProps={{

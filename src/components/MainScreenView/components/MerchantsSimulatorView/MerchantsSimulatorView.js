@@ -64,9 +64,13 @@ const MerchantsSimulatorView = ({
     },
     onSubmit: async (values) => {
       const outputImage = await generateOutputImage();
+
+      // parse and then format monthly traffic
+      const monthlyTraffic = Number(values.monthlyTraffic).toLocaleString();
+
       setEmailData({
-        outputImage: outputImage,
-        monthlyTraffic: values.monthlyTraffic,
+        outputImage,
+        monthlyTraffic,
         incentivesBudget: outputData.sponseredByIssuer,
         annualSalesIncrease: outputData.estimatedAnnualSalesUplift,
       });
@@ -105,6 +109,7 @@ const MerchantsSimulatorView = ({
           Number(newValues.aov),
           newValues.industry
         );
+
         setOutputData(UIOutputs);
         setLoading(false);
         !isDesktop && scrollToOutput();

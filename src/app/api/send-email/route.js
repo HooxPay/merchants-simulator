@@ -1,4 +1,8 @@
-import { processSimulatorImage, sendEmail } from './handlers';
+import {
+  processSimulatorImage,
+  sendEmailToAdmin,
+  sendEmailToClient,
+} from './handlers';
 
 export const POST = async (req) => {
   try {
@@ -10,6 +14,18 @@ export const POST = async (req) => {
     const annualSalesIncrease = data.get('annualSalesIncrease');
     const outputImage = data.get('outputImage');
 
+    const shouldSendToUser = process.env.SEND_OUTPUT_EMAIL === 'YES';
+    const shouldSendToAdmins = process.env.SEND_NEW_USER_EMAIL === 'YES';
+
+    // if no emails to send, return
+    if (!shouldSendToUser && !shouldSendToAdmins) {
+      return new Response(JSON.stringify({ message: 'No emails to send' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // upload output image to s3
     const simulatorImageUrl = await processSimulatorImage(
       outputImage,
       fullName
@@ -23,7 +39,6 @@ export const POST = async (req) => {
         }
       );
     }
-
     const emailBody = {
       email,
       fullName,
@@ -32,7 +47,16 @@ export const POST = async (req) => {
       annualSalesIncrease,
       simulatorImageUrl,
     };
-    const emailResponse = await sendEmail(emailBody);
+
+    // send email to client
+    let emailResponse = true;
+    if (shouldSendToUser) {
+      emailResponse = await sendEmailToClient(emailBody);
+    }
+
+    // send email to admin
+    shouldSendToAdmins && (await sendEmailToAdmin(emailBody));
+
     if (!emailResponse) {
       return new Response(
         JSON.stringify({ error: 'ses failed to send email' }),
@@ -43,6 +67,7 @@ export const POST = async (req) => {
       );
     }
 
+    // return success when done
     return new Response(
       JSON.stringify({
         message: 'email sent successfully',
@@ -51,12 +76,9 @@ export const POST = async (req) => {
     );
   } catch (error) {
     console.error('email sending failed', error.message);
-    return new Response(
-      JSON.stringify({ error: 'Failed to send email' }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    return new Response(JSON.stringify({ error: 'Failed to send email' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 };
