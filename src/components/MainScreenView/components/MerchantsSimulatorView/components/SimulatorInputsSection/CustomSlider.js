@@ -44,7 +44,6 @@ const CustomSlider = ({
       flexDirection='column'
       mb={2}
       key={`${name}-sliderContainer`}
-      sx={{ maxHeight: 88, height: '100%' }}
     >
       <Box display='flex' justifyContent='space-between' alignItems='center'>
         <StyledInputLabel htmlFor={name}>{label || name}</StyledInputLabel>
@@ -67,16 +66,14 @@ const CustomSlider = ({
                 showError(errorMsg);
               }
 
-              handleValuesChange();
+              handleValuesChange({ ...form.values, [name]: parsedValue });
             };
             return (
               <Box>
                 {error && <StyledTooltip open={true} title={error} />}
                 <StyledSliderTextField
                   value={field.value}
-                  onChange={(e) => {
-                    form.setFieldValue(name, e.target.value);
-                  }}
+                  onChange={(e) => form.setFieldValue(name, e.target.value)}
                   onBlur={(e) => handleBlur(e.target.value)}
                   name={name}
                   slotProps={{
