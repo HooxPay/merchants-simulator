@@ -53,3 +53,14 @@ export const StyledButton = styled(Button)(({ theme }) => ({
     maxWidth: 400,
   },
 }));
+
+export const StyledDisclaimer = styled(Typography)(({ theme }) => ({
+  fontSize: '0.875rem',
+  fontWeight: 400,
+  color: 'rgba(0, 0, 0, 0.8)',
+  maxWidth: 450,
+  [theme.breakpoints.down('md')]: {
+    marginTop: '1rem',
+    maxWidth: 400,
+  },
+}));
