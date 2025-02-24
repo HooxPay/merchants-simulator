@@ -156,7 +156,7 @@ const MerchantsSimulatorView = ({
               <StyledDisclaimer>
                 * Projected increases are estimates based on own algorithms and
                 industry benchmarks. Actual outcomes may vary. Hoox does not
-                guarantee specific results
+                guarantee specific results.
               </StyledDisclaimer>
             </StyledContentContainer>
           </form>
