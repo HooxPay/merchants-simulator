@@ -79,7 +79,7 @@ const SimulatorInputsSection = ({
         label={'average conversion (%)'}
         handleValuesChange={handleValuesChange}
         min={inputData.cvr.min}
-        max={inputData.cvr.max}
+        max={8}
         suffix={'%'}
         step={0.1}
       />

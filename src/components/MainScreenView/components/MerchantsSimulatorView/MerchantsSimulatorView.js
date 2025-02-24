@@ -8,6 +8,7 @@ import {
   StyledButton,
   StyledContainer,
   StyledContentContainer,
+  StyledDisclaimer,
   StyledRowContainer,
   StyledSubtitle,
   StyledTitle,
@@ -152,6 +153,11 @@ const MerchantsSimulatorView = ({
                   </StyledButton>
                 </Stack>
               </StyledRowContainer>
+              <StyledDisclaimer>
+                * Projected increases are estimates based on own algorithms and
+                industry benchmarks. Actual outcomes may vary. Hoox does not
+                guarantee specific results
+              </StyledDisclaimer>
             </StyledContentContainer>
           </form>
         </FormikProvider>

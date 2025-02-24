@@ -26,23 +26,23 @@ export const sendEmailToClient = async (body) => {
   //Template Params Object
   const {
     email,
-    fullName,
     monthlyTraffic,
     incentivesBudget,
     annualSalesIncrease,
     simulatorImageUrl,
+    merchantName,
   } = body;
   const params = {
     Content: {
       Template: {
         TemplateName: 'merchant-simulator-output-email-template', // The name of the template in SES
         TemplateData: JSON.stringify({
-          fullName,
           monthlyTraffic,
           incentivesBudget,
           annualSalesIncrease,
           simulatorImageUrl,
           merchantsDocsUrl,
+          merchantName,
         }),
       },
     },
@@ -73,6 +73,7 @@ export const sendEmailToAdmin = async (body) => {
     incentivesBudget,
     annualSalesIncrease,
     simulatorImageUrl,
+    merchantName,
   } = body;
   const params = {
     Content: {
@@ -85,6 +86,7 @@ export const sendEmailToAdmin = async (body) => {
           annualSalesIncrease,
           simulatorImageUrl,
           userEmailAddress: email,
+          merchantName,
         }),
       },
     },

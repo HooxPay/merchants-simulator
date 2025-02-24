@@ -8,6 +8,7 @@ export const POST = async (req) => {
   try {
     const data = await req.formData();
     const email = data.get('email');
+    const merchantName = data.get('merchant');
     const fullName = data.get('fullName');
     const monthlyTraffic = data.get('monthlyTraffic');
     const incentivesBudget = data.get('incentivesBudget');
@@ -41,6 +42,7 @@ export const POST = async (req) => {
     }
     const emailBody = {
       email,
+      merchantName,
       fullName,
       monthlyTraffic,
       incentivesBudget,
