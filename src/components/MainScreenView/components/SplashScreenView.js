@@ -10,7 +10,7 @@ const SplashScreenView = ({ setStep }) => {
         <Stack alignItems={'center'}>
           <Box>
             <Typography sx={styles.title}>
-              Unlock New Revenue Opportunities with Hoox
+              Increase Sales with Externally Funded Offers
             </Typography>
           </Box>
           <Box>

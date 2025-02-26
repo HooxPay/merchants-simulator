@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Box, Button, Typography } from '@mui/material';
 
-export const StyledContainer = styled(Box)(({ theme }) => ({
+export const StyledContainer = styled(Box)(() => ({
   maxWidth: 1050,
   margin: '0 auto',
   marginBottom: '5rem',
@@ -21,12 +21,12 @@ export const StyledContentContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const StyledTitle = styled(Typography)(({ theme }) => ({
+export const StyledTitle = styled(Typography)(() => ({
   fontSize: '2rem',
   fontWeight: 500,
 }));
 
-export const StyledSubtitle = styled(Typography)(({ theme }) => ({
+export const StyledSubtitle = styled(Typography)(() => ({
   fontSize: '1rem',
   fontWeight: 400,
   color: 'rgba(0, 0, 0, 0.8)',
@@ -50,6 +50,17 @@ export const StyledButton = styled(Button)(({ theme }) => ({
   '&:hover': { '&:disabled': { backgroundColor: 'rgba(0, 242, 155, 0.2)' } },
   [theme.breakpoints.down('md')]: {
     margin: '1rem 0 0 0',
+    maxWidth: 400,
+  },
+}));
+
+export const StyledDisclaimer = styled(Typography)(({ theme }) => ({
+  fontSize: '0.875rem',
+  fontWeight: 400,
+  color: 'rgba(0, 0, 0, 0.8)',
+  maxWidth: 450,
+  [theme.breakpoints.down('md')]: {
+    marginTop: '1rem',
     maxWidth: 400,
   },
 }));

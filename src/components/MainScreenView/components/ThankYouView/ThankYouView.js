@@ -3,7 +3,6 @@ import Logo from '@/components/Logo';
 import {
   StyledBackground,
   StyledBackgroundColor,
-  StyledImage,
   StyledMobileContainer,
   StyledSubtitle,
   StyledSubtitle2,
@@ -21,7 +20,7 @@ const ThankYouBody = () => {
         follow the steps to go live with Hoox!
       </StyledSubtitle>
       <StyledSubtitle2>
-        Join +30,000 and grow your business with embedded offers.{' '}
+        Join +30,000 merchants and grow your business with embedded offers{' '}
       </StyledSubtitle2>
     </StyledTextContainer>
   );

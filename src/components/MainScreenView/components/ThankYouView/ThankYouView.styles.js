@@ -1,4 +1,4 @@
-import { Box, Grid2, Link, Stack, Typography } from '@mui/material';
+import { Box, Grid2, Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 
@@ -41,11 +41,11 @@ export const StyledTitle = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const StyledImage = styled(Image)(({ theme }) => ({
+export const StyledImage = styled(Image)(() => ({
   marginTop: 70,
 }));
 
-export const StyledMobileContainer = styled(Box)(({ theme }) => ({
+export const StyledMobileContainer = styled(Box)(() => ({
   margin: '1.5rem',
 }));
 
@@ -71,4 +71,3 @@ export const StyledSubtitle2 = styled(Typography)(({ theme }) => ({
   color: theme.palette.common.white,
   marginTop: '1rem',
 }));
-

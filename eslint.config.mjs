@@ -1,32 +1,40 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { FlatCompat } from '@eslint/eslintrc';
-import { createRequire } from 'module';
+import nextPlugin from '@next/eslint-plugin-next';
+import reactPlugin from 'eslint-plugin-react';
+import globals from 'globals';
 
-const require = createRequire(import.meta.url);
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-  ...compat.extends('next/core-web-vitals'),
+export default [
   {
     files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      sourceType: 'module',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        ...globals.es2020,
+        // Add any custom globals your app needs
+      },
+    },
+    plugins: {
+      '@next/next': nextPlugin,
+      react: reactPlugin,
+    },
     rules: {
+      '@next/next/no-html-link-for-pages': 'error',
       'no-undef': 'error',
       'no-unused-vars': [
         'error',
         { vars: 'all', args: 'after-used', ignoreRestSiblings: false },
       ],
-      'no-console': 'warn',
+      'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
       'react/react-in-jsx-scope': 'off',
       'react/jsx-uses-react': 'off',
       'react/jsx-uses-vars': 'error',
     },
   },
 ];
-
-export default eslintConfig;
