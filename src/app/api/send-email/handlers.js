@@ -74,6 +74,7 @@ export const sendEmailToAdmin = async (body) => {
     annualSalesIncrease,
     simulatorImageUrl,
     merchantName,
+
   } = body;
   const params = {
     Content: {
@@ -86,7 +87,9 @@ export const sendEmailToAdmin = async (body) => {
           annualSalesIncrease,
           simulatorImageUrl,
           userEmailAddress: email,
+
           merchantName,
+
         }),
       },
     },

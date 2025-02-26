@@ -10,6 +10,7 @@ const computeConversionUplift = (
 ) => {
   const converisonUplift =
     (cvrIndustry / cvrInput) * hooxConversionUpliftIndustry * 100;
+
   return converisonUplift;
 };
 
@@ -42,7 +43,9 @@ const computeSalesUplift = (
     (1 + (cvrIndustry / cvrInput) * hooxConversionUpliftIndustry) *
     (1 + (aovIndustry / aovInput) * aovUpliftByIndustry);
 
+
   const salesUplift = (salesInHooxTransactions - originalTotalSales) * 12;
+
   return salesUplift;
 };
 
