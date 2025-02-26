@@ -9,49 +9,40 @@ const computeConversionUplift = (
   hooxConversionUpliftIndustry
 ) => {
   const converisonUplift =
-    (cvrInput / cvrIndustry) * hooxConversionUpliftIndustry * 100;
+    (cvrIndustry / cvrInput) * hooxConversionUpliftIndustry * 100;
   return converisonUplift;
 };
 
 const computeAOVUplift = (aovInput, aovIndustry, aovUpliftIndustry) => {
-  const aovUpliftComputed = (aovInput / aovIndustry) * aovUpliftIndustry * 100;
+  const aovUpliftComputed = (aovIndustry / aovInput) * aovUpliftIndustry * 100;
   return aovUpliftComputed;
 };
 
 const computeSalesUplift = (
   cvrInput,
   cvrIndustry,
-  conversionUpliftIndustry,
+  hooxConversionUpliftIndustry,
   monthlyTrafficInput,
   aovInput,
   aovIndustry,
-  avgDiscountInput
+  avgDiscountInput,
+  aovUpliftByIndustry
 ) => {
+  const hooxSharesInOffers = hooxConstants.hooxShareInOffers;
+
   const originalTotalSales =
-    monthlyTrafficInput * cvrInput * aovInput * (1 - avgDiscountInput);
-
-  const originalSalesInHooxTransactions =
-    originalTotalSales * hooxConstants.hooxShareInOffers;
-
-  const coversionUplift = computeConversionUplift(
-    cvrInput,
-    cvrIndustry,
-    conversionUpliftIndustry
-  );
-
-  const aovUplift = computeAOVUplift(
-    aovInput,
-    aovIndustry,
-    conversionUpliftIndustry
-  );
+    monthlyTrafficInput *
+    cvrInput *
+    aovInput *
+    (1 - avgDiscountInput) *
+    hooxSharesInOffers;
 
   const salesInHooxTransactions =
-    originalSalesInHooxTransactions *
-    (1 + coversionUplift / 100) *
-    (1 + aovUplift / 100);
+    originalTotalSales *
+    (1 + (cvrIndustry / cvrInput) * hooxConversionUpliftIndustry) *
+    (1 + (aovIndustry / aovInput) * aovUpliftByIndustry);
 
-  const salesUplift =
-    (salesInHooxTransactions - originalSalesInHooxTransactions) * 12;
+  const salesUplift = (salesInHooxTransactions - originalTotalSales) * 12;
   return salesUplift;
 };
 
@@ -73,7 +64,7 @@ export const caclulateUIOutputs = (
 ) => {
   const industryData = getIndustryByDisplayName(industryDisplayName);
   const cvrIndustry = industryData.cvr;
-  const hooxConversionUplift = industryData.hooxConversionUplift;
+  const hooxConversionUpliftIndustry = industryData.hooxConversionUplift;
   const aovIndustry = industryData.aov;
   const hooxIncentiveInIndustry = industryData.hooxDiscount;
   const estimatedAnnualBudget = computeEstimatedAnnualBudget(
@@ -89,7 +80,7 @@ export const caclulateUIOutputs = (
   const conversionUplift = computeConversionUplift(
     cvrInput,
     cvrIndustry,
-    hooxConversionUplift
+    hooxConversionUpliftIndustry
   );
 
   const aovUplift = computeAOVUplift(
@@ -101,11 +92,12 @@ export const caclulateUIOutputs = (
   const annualSalesUplift = computeSalesUplift(
     cvrInput,
     cvrIndustry,
-    hooxConversionUplift,
+    hooxConversionUpliftIndustry,
     monthlyTrafficInput,
     avgOrderInput,
     aovIndustry,
-    avgDiscountInput
+    avgDiscountInput,
+    aovUpliftByIndustry
   );
 
   const formattedSalesUplift = formatCurrency(annualSalesUplift);

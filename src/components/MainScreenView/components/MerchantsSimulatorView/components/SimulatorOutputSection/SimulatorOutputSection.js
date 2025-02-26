@@ -30,7 +30,7 @@ const SimulatorOutputSection = forwardRef(({ isLoading, outputData }, ref) => {
   };
   return (
     <StyledContainer ref={ref}>
-      <StyledTitle>Estimated annual Sales Uplift:</StyledTitle>
+      <StyledTitle>Estimated annual Sales Uplift*:</StyledTitle>
       <StyledBudgetSummaryContainer>
         {isLoading ? (
           <StyledBudgetTotalSkeleton

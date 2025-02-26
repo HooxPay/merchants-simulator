@@ -33,6 +33,7 @@ const ShareEmailView = ({ setStep, emailData }) => {
   const formik = useFormik({
     initialValues: {
       name: '',
+      merchant: '',
       email: '',
     },
     validationSchema: validationSchema,
@@ -68,6 +69,7 @@ const ShareEmailView = ({ setStep, emailData }) => {
               Share your email and get access to Hoox plugin/API for free!
             </StyledSubtitle>
             <CustomField name={'name'} label={'full name'} />
+            <CustomField name={'merchant'} label={'brand/store name'} />
             <CustomField name={'email'} label={'work email'} />
             <StyledBottomSubtitle>
               By submitting your email, you agree to Hoox T&C and our Privacy
