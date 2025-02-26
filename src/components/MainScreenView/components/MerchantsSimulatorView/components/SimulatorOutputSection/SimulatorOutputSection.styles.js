@@ -12,12 +12,12 @@ export const StyledContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const StyledTitle = styled(Typography)(({ theme }) => ({
+export const StyledTitle = styled(Typography)(() => ({
   padding: '2rem 2rem 1rem 2rem',
   fontSize: '1.5rem',
 }));
 
-export const StyledBudgetSummaryContainer = styled(Box)(({ theme }) => ({
+export const StyledBudgetSummaryContainer = styled(Box)(() => ({
   padding: '0 2rem 3rem 2rem',
   lineHeight: 0,
 }));
@@ -29,7 +29,7 @@ export const StyledBudgetTotal = styled(Typography)(({ theme }) => ({
   color: theme.shadesOfPurple.light,
 }));
 
-export const StyledBudgetMonthly = styled(Typography)(({ theme }) => ({
+export const StyledBudgetMonthly = styled(Typography)(() => ({
   fontSize: '1.25rem',
   color: 'rgba(0, 0, 0, 0.7)',
 }));
@@ -57,7 +57,7 @@ export const StyledUpliftContentContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const StyledUpliftTitle = styled(Typography)(({ theme }) => ({
+export const StyledUpliftTitle = styled(Typography)(() => ({
   fontSize: '0.875rem',
 }));
 
@@ -67,20 +67,20 @@ export const StyledUpliftAmount = styled(Typography)(({ theme }) => ({
   color: theme.shadesOfPurple.light,
 }));
 
-export const StyledUpliftSkeleton = styled(Skeleton)(({ theme }) => ({
+export const StyledUpliftSkeleton = styled(Skeleton)(() => ({
   marginTop: '0.375rem',
   background:
     'linear-gradient(90deg, rgba(145, 106, 255, 0.4) 0%, rgba(145, 106, 255, 0) 100%)',
   borderRadius: '0.5rem',
 }));
 
-export const StyledBudgetTotalSkeleton = styled(Skeleton)(({ theme }) => ({
+export const StyledBudgetTotalSkeleton = styled(Skeleton)(() => ({
   background:
     'linear-gradient(90deg, rgba(145, 106, 255, 0.4) 0%, rgba(145, 106, 255, 0) 100%)',
   borderRadius: '0.5rem',
 }));
 
-export const StyledBudgetMonthlySkeleton = styled(Skeleton)(({ theme }) => ({
+export const StyledBudgetMonthlySkeleton = styled(Skeleton)(() => ({
   marginTop: '0.5rem',
   marginBottom: '0.25rem',
   background:

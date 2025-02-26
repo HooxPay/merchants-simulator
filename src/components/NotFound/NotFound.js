@@ -1,20 +1,19 @@
-'use client'
-import React from 'react'
+'use client';
 
-import { Box, Stack, useMediaQuery, useTheme } from '@mui/material'
-import Logo from '../Logo'
+import { Box, useMediaQuery, useTheme } from '@mui/material';
+import Logo from '../Logo';
 import {
   StyledButton,
   StyledContainer,
   StyledErrorCode,
   StyledSubtitle,
-} from './NotFound.styles'
-import { redirect } from 'next/navigation'
-import Image from 'next/image'
+} from './NotFound.styles';
+import { redirect } from 'next/navigation';
+import Image from 'next/image';
 
 const NotFound = () => {
-  const theme = useTheme()
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   return (
     <Box>
       <Box
@@ -50,10 +49,10 @@ const NotFound = () => {
             Go to Homepage
           </StyledButton>
         </Box>
-        <Image src={'/404.png'} alt="404 image" width={410} height={410} />
+        <Image src={'/404.png'} alt='404 image' width={410} height={410} />
       </StyledContainer>
     </Box>
-  )
-}
+  );
+};
 
-export default NotFound
+export default NotFound;

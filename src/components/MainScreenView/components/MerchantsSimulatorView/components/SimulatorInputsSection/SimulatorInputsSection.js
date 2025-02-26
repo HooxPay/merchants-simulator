@@ -21,7 +21,7 @@ const SimulatorInputsSection = ({
           industry
         </StyledInputLabel>
         <Field name={'industry'}>
-          {({ field, form }) => (
+          {({ field }) => (
             <StyledSelect
               {...field}
               value={field.value}

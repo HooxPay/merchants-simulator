@@ -3,7 +3,6 @@ import Logo from '@/components/Logo';
 import {
   StyledBackground,
   StyledBackgroundColor,
-  StyledImage,
   StyledMobileContainer,
   StyledSubtitle,
   StyledSubtitle2,

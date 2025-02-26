@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Box, Button, Divider, Typography } from '@mui/material';
 
-export const StyledContainer = styled(Box)(({ theme }) => ({
+export const StyledContainer = styled(Box)(() => ({
   maxWidth: 950,
   margin: '0 auto',
 }));
@@ -20,12 +20,12 @@ export const StyledContentContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const StyledTitle = styled(Typography)(({ theme }) => ({
+export const StyledTitle = styled(Typography)(() => ({
   fontSize: '2rem',
   fontWeight: 500,
 }));
 
-export const StyledSubtitle = styled(Typography)(({ theme }) => ({
+export const StyledSubtitle = styled(Typography)(() => ({
   fontSize: '1rem',
   fontWeight: 400,
   color: 'rgba(0, 0, 0, 0.8)',
@@ -56,16 +56,16 @@ export const StyledFooterContainer = styled(Box)(({ theme }) => ({
     position: 'fixed',
   },
 }));
-export const StyledButtonsContainer = styled(Box)(({ theme }) => ({
+export const StyledButtonsContainer = styled(Box)(() => ({
   display: 'flex',
   gap: '1rem',
   justifyContent: 'flex-end',
   padding: '20px',
 }));
 
-export const StyledDivider = styled(Divider)(({ theme }) => ({}));
+export const StyledDivider = styled(Divider)(() => ({}));
 
-export const StyledBottomSubtitle = styled(Typography)(({ theme }) => ({
+export const StyledBottomSubtitle = styled(Typography)(() => ({
   fontSize: '1rem',
   fontWeight: 400,
   color: 'rgba(0, 0, 0, 0.8)',

@@ -31,7 +31,7 @@ export default [
         'error',
         { vars: 'all', args: 'after-used', ignoreRestSiblings: false },
       ],
-      'no-console': 'warn',
+      'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
       'react/react-in-jsx-scope': 'off',
       'react/jsx-uses-react': 'off',
       'react/jsx-uses-vars': 'error',

@@ -55,8 +55,8 @@ export const sendEmailToClient = async (body) => {
   // Send e-mail using ses v2 client
   try {
     const command = new SendEmailCommand(params);
-    const emailResponse = await ses.send(command);
-    console.log('Email sent successfully:', emailResponse);
+    await ses.send(command);
+    // console.log('Email sent successfully:', emailResponse);
     return true;
   } catch (error) {
     console.error(error);
@@ -74,7 +74,6 @@ export const sendEmailToAdmin = async (body) => {
     annualSalesIncrease,
     simulatorImageUrl,
     merchantName,
-
   } = body;
   const params = {
     Content: {
@@ -89,7 +88,6 @@ export const sendEmailToAdmin = async (body) => {
           userEmailAddress: email,
 
           merchantName,
-
         }),
       },
     },
@@ -102,8 +100,7 @@ export const sendEmailToAdmin = async (body) => {
   // Send e-mail using ses v2 client
   try {
     const command = new SendEmailCommand(params);
-    const emailResponse = await ses.send(command);
-    console.log('Email sent successfully:', emailResponse);
+    await ses.send(command);
   } catch (error) {
     console.error(error);
   }
@@ -150,7 +147,6 @@ export const processSimulatorImage = async (simulatorImage, fullName) => {
       simulatorImage.type
     );
 
-    console.log('Simulator image upload successful:', bannerUploadResult);
     return bannerUploadResult;
   } catch (error) {
     console.error(error);

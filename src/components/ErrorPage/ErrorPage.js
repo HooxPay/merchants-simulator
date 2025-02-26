@@ -1,19 +1,18 @@
-'use client'
-import React from 'react'
+'use client';
 
-import { Box, Link, useMediaQuery, useTheme } from '@mui/material'
-import Logo from '../Logo'
+import { Box, Link, useMediaQuery, useTheme } from '@mui/material';
+import Logo from '../Logo';
 import {
   StyledTitle,
   StyledContainer,
   StyledSubtitle,
   StyledLinkTypography,
-} from './ErrorPage.styles'
-import Image from 'next/image'
+} from './ErrorPage.styles';
+import Image from 'next/image';
 
 const ErrorPage = () => {
-  const theme = useTheme()
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   return (
     <Box>
       <Box
@@ -49,10 +48,10 @@ const ErrorPage = () => {
             <StyledLinkTypography>support@hooxpay.com</StyledLinkTypography>
           </Link>
         </Box>
-        <Image src={'/error.png'} alt="error image" width={430} height={350} />
+        <Image src={'/error.png'} alt='error image' width={430} height={350} />
       </StyledContainer>
     </Box>
-  )
-}
+  );
+};
 
-export default ErrorPage
+export default ErrorPage;

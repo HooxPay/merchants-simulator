@@ -9,7 +9,7 @@ import {
   tooltipClasses,
 } from '@mui/material';
 
-export const StyledSelect = styled(Select)(({ theme }) => ({
+export const StyledSelect = styled(Select)(() => ({
   width: '100%',
   border: '1px solid rgba(0, 0, 0, 0.15)',
   borderRadius: '0.5rem',
@@ -23,13 +23,13 @@ export const StyledSelect = styled(Select)(({ theme }) => ({
   },
 }));
 
-export const StyledInputContainer = styled(Box)(({ theme }) => ({
+export const StyledInputContainer = styled(Box)(() => ({
   maxWidth: 400,
   width: '100%',
   marginTop: '2rem',
 }));
 
-export const StyledSlider = styled(Slider)(({ theme }) => ({
+export const StyledSlider = styled(Slider)(() => ({
   color: '#916AFF',
   '& .MuiSlider-thumb': {
     zIndex: 1,
