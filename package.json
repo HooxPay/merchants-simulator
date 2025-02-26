@@ -30,7 +30,11 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@next/eslint-plugin-next": "^15.1.7",
+    "@types/node": "^22.13.5",
     "eslint": "^9",
-    "eslint-config-next": "15.1.6"
+    "eslint-config-next": "15.1.6",
+    "eslint-plugin-react": "^7.37.4",
+    "globals": "^16.0.0"
   }
 }
