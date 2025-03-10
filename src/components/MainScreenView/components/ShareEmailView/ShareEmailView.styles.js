@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Box, Button, Divider, Typography } from '@mui/material';
+import { Box, Button, Divider, Link, Typography } from '@mui/material';
 
 export const StyledContainer = styled(Box)(() => ({
   maxWidth: 950,
@@ -69,5 +69,22 @@ export const StyledBottomSubtitle = styled(Typography)(() => ({
   fontSize: '1rem',
   fontWeight: 400,
   color: 'rgba(0, 0, 0, 0.8)',
-  padding: '1rem 0 6rem 0',
+  display: 'inline',
+}));
+
+export const StyledLink = styled(Link)(({ theme }) => ({
+  fontSize: '1rem',
+  fontWeight: 400,
+  color: theme.shadesOfPurple.light,
+  textDecoration: 'underline',
+  display: 'inline',
+  ':hover': {
+    textDecoration: 'none',
+    color: theme.palette.secondary.main,
+  },
+}));
+
+export const StyledPolicyContainer = styled(Box)(({ theme }) => ({
+  marginTop: '1rem',
+  marginBottom: '6rem',
 }));
