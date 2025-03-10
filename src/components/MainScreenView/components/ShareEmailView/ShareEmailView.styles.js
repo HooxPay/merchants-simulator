@@ -84,7 +84,7 @@ export const StyledLink = styled(Link)(({ theme }) => ({
   },
 }));
 
-export const StyledPolicyContainer = styled(Box)(({ theme }) => ({
+export const StyledPolicyContainer = styled(Box)(({}) => ({
   marginTop: '1rem',
   marginBottom: '6rem',
 }));
