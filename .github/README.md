@@ -9,6 +9,13 @@
 
 ## Release Notes
 
+### v 0.1.2 Privacy Policy
+
+1. Updated Privacy Policy.
+2. Updated email template with Privacy Policy.
+
+#### Released 13 Mar 2025
+
 ### v 0.1.1 UI Modifications and Computation Alignment
 
 1. Added Brand/Store name text field to Form.
