@@ -82,7 +82,7 @@ const ShareEmailView = ({ setStep, emailData }) => {
                   'https://www.hooxpay.com/merchant-simulator-and-icp-privacy-policy'
                 }
               >
-                Privac Policy
+                Privacy Policy
               </StyledLink>
             </StyledPolicyContainer>
             <StyledFooterContainer>
