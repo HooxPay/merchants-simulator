@@ -8,6 +8,8 @@ import {
   StyledContentContainer,
   StyledDivider,
   StyledFooterContainer,
+  StyledLink,
+  StyledPolicyContainer,
   StyledSubtitle,
   StyledTitle,
 } from './ShareEmailView.styles';
@@ -71,10 +73,18 @@ const ShareEmailView = ({ setStep, emailData }) => {
             <CustomField name={'name'} label={'full name'} />
             <CustomField name={'merchant'} label={'brand/store name'} />
             <CustomField name={'email'} label={'work email'} />
-            <StyledBottomSubtitle>
-              By submitting your email, you agree to Hoox T&C and our Privacy
-              Policy.
-            </StyledBottomSubtitle>
+            <StyledPolicyContainer>
+              <StyledBottomSubtitle>
+                By submitting your email, you agree to our{' '}
+              </StyledBottomSubtitle>
+              <StyledLink
+                href={
+                  'https://www.hooxpay.com/merchant-simulator-and-icp-privacy-policy'
+                }
+              >
+                Privac Policy
+              </StyledLink>
+            </StyledPolicyContainer>
             <StyledFooterContainer>
               <StyledDivider variant='horizontal' />
               <StyledButtonsContainer>
