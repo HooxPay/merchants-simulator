@@ -10,13 +10,13 @@
     "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.772.0",
-    "@aws-sdk/client-sesv2": "^3.738.0",
+    "@aws-sdk/client-s3": "^3.740.0",
+    "@aws-sdk/client-sesv2": "^3.772.0",
     "@emotion/cache": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.1",
     "@mui/material": "^6.4.1",
-    "@mui/material-nextjs": "^6.3.1",
+    "@mui/material-nextjs": "^6.4.3",
     "date-fns": "^4.1.0",
     "formik": "^2.4.6",
     "html-to-image": "^1.11.11",
