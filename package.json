@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.740.0",
-    "@aws-sdk/client-sesv2": "^3.772.0",
+    "@aws-sdk/client-sesv2": "^3.774.0",
     "@emotion/cache": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.1",
