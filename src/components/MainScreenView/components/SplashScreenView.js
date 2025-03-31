@@ -10,7 +10,7 @@ const SplashScreenView = ({ setStep }) => {
         <Stack alignItems={'center'}>
           <Box>
             <Typography sx={styles.title}>
-              Increase Sales with Externally Funded Offers
+              Increase Sales with Issuer Funded Offers
             </Typography>
           </Box>
           <Box>

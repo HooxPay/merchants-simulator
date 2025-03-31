@@ -149,7 +149,7 @@ const MerchantsSimulatorView = ({
                     onClick={handleSubmit}
                     disabled={isLoading}
                   >
-                    Start Hooxing
+                    Start Hooxing, it's FREE
                   </StyledButton>
                 </Stack>
               </StyledRowContainer>
