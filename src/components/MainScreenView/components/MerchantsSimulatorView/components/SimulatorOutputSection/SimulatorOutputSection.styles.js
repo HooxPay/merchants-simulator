@@ -1,9 +1,15 @@
 import styled from '@emotion/styled';
-import { Box, Skeleton, Typography } from '@mui/material';
+import {
+  Box,
+  Skeleton,
+  Tooltip,
+  tooltipClasses,
+  Typography,
+} from '@mui/material';
 
 export const StyledContainer = styled(Box)(({ theme }) => ({
-  maxWidth: 500,
-  maxHeight: 320,
+  maxWidth: 520,
+  maxHeight: 340,
   backgroundColor: '#F6F2FF',
   borderRadius: '0.5rem',
   [theme.breakpoints.down('md')]: {
@@ -13,12 +19,17 @@ export const StyledContainer = styled(Box)(({ theme }) => ({
 }));
 
 export const StyledTitle = styled(Typography)(() => ({
-  padding: '2rem 2rem 1rem 2rem',
+  padding: '1.5rem 2rem 1rem 2rem',
   fontSize: '1.5rem',
 }));
 
+export const StyledSubtitle = styled(Typography)(() => ({
+  fontSize: '1.125rem',
+  padding: '0 0 0.75rem 2rem',
+}));
+
 export const StyledBudgetSummaryContainer = styled(Box)(() => ({
-  padding: '0 2rem 3rem 2rem',
+  padding: '0 2rem 2rem 2rem',
   lineHeight: 0,
 }));
 
@@ -86,4 +97,17 @@ export const StyledBudgetMonthlySkeleton = styled(Skeleton)(() => ({
   background:
     'linear-gradient(90deg, rgba(145, 106, 255, 0.4) 0%, rgba(145, 106, 255, 0) 100%)',
   borderRadius: '0.5rem',
+}));
+
+export const StyledToolTip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: '#F6F2FF',
+    fontSize: '0.625rem',
+    fontWeight: 400,
+    color: theme.palette.common.black,
+    padding: '0.5rem',
+    border: `1px solid ${theme.shadesOfPurple.light}`,
+  },
 }));
