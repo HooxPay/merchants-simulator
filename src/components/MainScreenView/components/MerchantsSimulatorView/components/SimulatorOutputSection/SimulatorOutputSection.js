@@ -7,19 +7,35 @@ import {
   StyledBudgetTotal,
   StyledBudgetTotalSkeleton,
   StyledContainer,
+  StyledSubtitle,
   StyledTitle,
+  StyledToolTip,
   StyledUpliftAmount,
   StyledUpliftContainer,
   StyledUpliftContentContainer,
   StyledUpliftSkeleton,
   StyledUpliftTitle,
 } from './SimulatorOutputSection.styles';
+import { InfoOutlined } from '@mui/icons-material';
+import { Stack } from '@mui/material';
 
 const SimulatorOutputSection = forwardRef(({ isLoading, outputData }, ref) => {
   const renderUplift = (name, value) => {
     return (
       <StyledUpliftContentContainer>
-        <StyledUpliftTitle>{name}</StyledUpliftTitle>
+        <Stack direction={'row'} alignItems={'center'}>
+          <StyledUpliftTitle>{name}</StyledUpliftTitle>
+          {name === 'Sponsored by issuers' && (
+            <StyledToolTip
+              title={
+                'These are fully funded marketing budgets we will get for your store from card issuers.'
+              }
+              arrow
+            >
+              <InfoOutlined sx={{ fontSize: '1rem', marginLeft: '0.25rem' }} />
+            </StyledToolTip>
+          )}
+        </Stack>
         {isLoading ? (
           <StyledUpliftSkeleton variant='rectangular' width={70} height={20} />
         ) : (
@@ -30,7 +46,6 @@ const SimulatorOutputSection = forwardRef(({ isLoading, outputData }, ref) => {
   };
   return (
     <StyledContainer ref={ref}>
-
       <StyledTitle>Estimated annual Sales Uplift*:</StyledTitle>
 
       <StyledBudgetSummaryContainer>
@@ -57,6 +72,7 @@ const SimulatorOutputSection = forwardRef(({ isLoading, outputData }, ref) => {
           </StyledBudgetMonthly>
         )}
       </StyledBudgetSummaryContainer>
+      <StyledSubtitle>Transactions with Hoox:</StyledSubtitle>
       <StyledUpliftContainer>
         {renderUplift('Conversion uplift', outputData?.conversionUplift || 0)}
         {renderUplift('AOV uplift', outputData?.aovUplift || 0)}
