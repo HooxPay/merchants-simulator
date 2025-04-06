@@ -26,6 +26,7 @@ export const sendEmailToClient = async (body) => {
   //Template Params Object
   const {
     email,
+    fullName,
     monthlyTraffic,
     incentivesBudget,
     annualSalesIncrease,
@@ -37,6 +38,7 @@ export const sendEmailToClient = async (body) => {
       Template: {
         TemplateName: 'merchant-simulator-output-email-template', // The name of the template in SES
         TemplateData: JSON.stringify({
+          fullName,
           monthlyTraffic,
           incentivesBudget,
           annualSalesIncrease,
