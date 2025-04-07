@@ -9,6 +9,18 @@
 
 ## Release Notes
 
+### v 0.1.3 UI changes on the Splash & Simulator pages
+
+1. Updated the text on the Splash screen.
+2. Made some minor UI changes.
+3. Updated the text in the email template.
+
+Bug fix:
+
+1. Fixed the bug with displaying the full name in the email template.
+
+#### Released 7 Apr 2025
+
 ### v 0.1.2 Privacy Policy
 
 1. Updated Privacy Policy.
