@@ -1,4 +1,6 @@
 "use client";
+
+import { useEffect } from "react";
 import Logo from "@/components/Logo";
 import {
     StyledBackground,
@@ -11,7 +13,6 @@ import {
 } from "./ThankYouView.styles";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { trackCustomEvent } from "@/lib/mixpanel";
-import { useEffect } from "react";
 
 const ThankYouBody = () => {
     return (
@@ -33,7 +34,7 @@ const ThankYouView = () => {
     const theme = useTheme();
     useEffect(() => {
         trackCustomEvent("Step Viewed", { Name: "Thank you" });
-    }, [trackCustomEvent]);
+    }, []);
     const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
     return (

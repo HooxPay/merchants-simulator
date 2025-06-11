@@ -31,7 +31,7 @@ import { trackCustomEvent } from "@/lib/mixpanel";
 const ShareEmailView = ({ setStep, emailData }) => {
     useEffect(() => {
         trackCustomEvent("Step Viewed", { Name: "Share email" });
-    }, [trackCustomEvent]);
+    }, []);
     const [isLoading, setLoading] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const theme = useTheme();

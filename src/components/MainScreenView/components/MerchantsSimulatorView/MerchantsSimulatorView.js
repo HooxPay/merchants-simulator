@@ -30,7 +30,7 @@ const MerchantsSimulatorView = ({
 }) => {
     useEffect(() => {
         trackCustomEvent("Step Viewed", { Name: "Setup" });
-    }, [trackCustomEvent]);
+    }, []);
     const inputInitialValues = getUIDefaultsForIndustry("avg");
     const [isLoading, setLoading] = useState(true);
     const [inputData, setInputData] = useState(inputInitialValues);
