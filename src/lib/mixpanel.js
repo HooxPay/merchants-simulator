@@ -1,7 +1,7 @@
 import mixpanel from "mixpanel-browser";
 
 const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
-const isProduction = true || process.env.NEXT_PUBLIC_NODE_ENV === "production";
+const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production";
 
 export const initMixpanel = () => {
     if (!MIXPANEL_TOKEN || !isProduction || mixpanel.__initialized) return;
