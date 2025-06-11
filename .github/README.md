@@ -9,6 +9,12 @@
 
 ## Release Notes
 
+### v 0.1.4 Analytics
+
+1. Added analytics for main events.
+
+#### Released 11 Jun 2025
+
 ### v 0.1.3 UI changes on the Splash & Simulator pages
 
 1. Updated the text on the Splash screen.
