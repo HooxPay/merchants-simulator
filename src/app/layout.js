@@ -13,6 +13,10 @@ const inter = Inter({ display: "swap", subsets: ["latin"] });
 export const metadata = {
     title: "Merchants Simulator",
     description: "Hoox Pay merchants simulator",
+    robots: {
+        index: false,
+        follow: false,
+    },
 };
 
 export default function RootLayout({ children }) {
